@@ -1,0 +1,20 @@
+/* styles.css */
+.auth-layout {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-layout-header {
+  position: fixed;
+  border-top: 16px solid var(--primary-color);
+  width: 100%;
+  height: 4rem;
+  box-sizing: border-box;
+}
+
+.auth-layout-header img {
+  position: absolute;
+  height: 4rem;
+  left: 0;
+  top: -1.25rem;
+}
