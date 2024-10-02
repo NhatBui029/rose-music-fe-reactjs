@@ -1,0 +1,17 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: Arial, sans-serif; /* Đặt font mặc định */
+  line-height: 1.6; /* Đặt khoảng cách giữa các dòng */
+  background-color: #fff;
+  color: #333;
+}
