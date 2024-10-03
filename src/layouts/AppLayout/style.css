@@ -1,0 +1,11 @@
+.app-layout-sider {
+  background-color: white;
+  /* height: 100%; */
+}
+
+.app-layout-sider .ant-layout-sider-children {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* align-items: center; */
+}

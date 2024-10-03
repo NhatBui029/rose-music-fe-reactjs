@@ -1,6 +1,6 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { ROUTE_PATHS } from './route-paths.constant'
-import AppLayout from '../layouts/AppLayout'
+import AppLayout from '../layouts/AppLayout/AppLayout'
 import ProtectedRoute from './ProtectedRoute'
 import HomeScreen from '../screens/HomeScreen'
 import { NotFoundScreen, SystemErrorScreen } from '../screens/ResultScreen'
