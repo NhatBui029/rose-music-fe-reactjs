@@ -10,8 +10,11 @@ export const ROUTE_PATHS = {
   SCHEDULE: '/schedule',
   ACCOUNT: '/account',
   FINANCE: '/finance',
+  REGISTER: '/course/register',
+  DEFER: '/course/defer',
   REPORT: '/report',
   NOTICE: '/notice',
+  REVIEW: '/review',
   SYSTEM_ERROR: '/system-error',
   LOGOUT: '/logout',
 }
