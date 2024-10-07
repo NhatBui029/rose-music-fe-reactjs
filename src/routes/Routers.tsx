@@ -6,6 +6,7 @@ import HomeScreen from '../screens/HomeScreen'
 import { NotFoundScreen, SystemErrorScreen } from '../screens/ResultScreen'
 import AuthLayout from '../layouts/AuthLayout'
 import { LoginScreen } from '../screens/LoginScreen'
+import { CreateFacilityScreen, FacilityScreen } from '../screens/FacilityScreen'
 
 const Routers = () => {
   const router = createBrowserRouter([
@@ -18,6 +19,22 @@ const Routers = () => {
           element: (
             <ProtectedRoute>
               <HomeScreen />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: '/facility',
+          element: (
+            <ProtectedRoute>
+              <FacilityScreen />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: '/facility/create',
+          element: (
+            <ProtectedRoute>
+              <CreateFacilityScreen />
             </ProtectedRoute>
           ),
         },

@@ -5,6 +5,7 @@ export const ROUTE_PATHS = {
   STUDENT: '/student',
   COURSE: '/course',
   FACILITY: '/facility',
+  FACILITY_CREATE: '/facility/create',
   ATTENDANCE: '/attendance',
   CALENDAR: '/calendar',
   SCHEDULE: '/schedule',

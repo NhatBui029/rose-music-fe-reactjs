@@ -27,6 +27,7 @@ import { BsFillHousesFill } from 'react-icons/bs'
 import { RiCalendarScheduleFill } from 'react-icons/ri'
 import { SiCashapp } from 'react-icons/si'
 import { TbReportAnalytics } from 'react-icons/tb'
+import Breadcrumb from '../../components/Breadcrumb/Breadcrumb'
 
 const AppLayout = () => {
   // const setCurrentUser = useAppStore((stage) => stage.setCurrentUser)
@@ -189,11 +190,7 @@ const AppLayout = () => {
             gap: '1.25rem',
           }}
         >
-          <Sider
-            // width={280}
-            collapsed={collapsed}
-            className="app-layout-sider"
-          >
+          <Sider width={220} collapsed={collapsed} className="app-layout-sider">
             <Menu
               mode="inline"
               items={sideMenuItems}
@@ -217,6 +214,7 @@ const AppLayout = () => {
                   height: '100%',
                 }}
               >
+                <Breadcrumb />
                 <Outlet />
               </div>
             </Content>
