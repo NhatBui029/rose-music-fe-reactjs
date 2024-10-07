@@ -11,7 +11,6 @@ type HandleType = {
 const Breadcrumb = () => {
   const location = useLocation()
   const matches = useMatches() as UIMatch<unknown, HandleType>[]
-  console.log('🚀 ~ Breadcrumb ~ matches:', matches)
   const items = matches
     .filter((match) => Boolean(match.handle?.breadcrumb))
     .map(

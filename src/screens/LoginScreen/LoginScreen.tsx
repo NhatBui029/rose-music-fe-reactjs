@@ -8,7 +8,7 @@ import { ROUTE_PATHS } from '../../routes/route-paths.constant'
 const DUMMY_CREDENTIALS = { username: 'dummy_id', password: '12345' }
 
 const LoginScreen = () => {
-  const { setCurrentUser, setVerifyingToken } = useAppStore()
+  const { setCurrentUser } = useAppStore()
   const navigate = useNavigate()
   const onFinish: FormProps<LoginFormData>['onFinish'] = (values) => {
     console.log(values)
@@ -22,12 +22,11 @@ const LoginScreen = () => {
     setCurrentUser({
       userId: 1,
       userName: 'dummy user name',
+      token: {
+        accessToken: 'a dummy token',
+        refreshToken: 'a dummy refresh token',
+      } as Token,
     } as UserData)
-
-    setVerifyingToken({
-      accessToken: 'a dummy token',
-      refreshToken: 'a dummy refresh token',
-    } as Token)
 
     navigate(ROUTE_PATHS.HOME)
   }

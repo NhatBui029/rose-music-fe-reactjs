@@ -24,7 +24,7 @@ const useAppStore = create<AppState>()(
         name: 'app-store',
         partialize: (state) => ({
           currentUser: state.currentUser,
-          verifyingToken: state.verifyingToken,
+          // verifyingToken: state.verifyingToken,
         }),
       },
     ),
