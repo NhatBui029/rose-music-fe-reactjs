@@ -1,65 +1,51 @@
-import { useEffect, useState } from 'react'
 import apiInstance from '../../api/apiInstance'
 import { API_ENPOINTS } from '../../api/api.constants'
-import {
-  Button,
-  Form,
-  FormProps,
-  GetProp,
-  Input,
-  Upload,
-  UploadFile,
-  UploadProps,
-} from 'antd'
-import { CreateFacility } from '../../types/facility.type'
-import { TiUploadOutline } from 'react-icons/ti'
-import axios from 'axios'
-
-type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0]
+import { Button, Form, FormProps, Input, Upload, message } from 'antd'
+import { UploadOutlined } from '@ant-design/icons'
+import apiCloudinaryInstance from '../../api/apiCloudinaryInstance'
 
 const CreateFacilityScreen = () => {
-  useEffect(() => {
-    const getData = async () => {
-      const data = await apiInstance.post(API_ENPOINTS.URL_UPLOAD, {
-        folderName: 'facility',
-      })
-      console.log('🚀 ~ getData ~ data:', data)
-    }
+  const onFinish: FormProps['onFinish'] = async (values) => {
+    try {
+      const presignedUrl: string = await apiInstance.post(
+        API_ENPOINTS.URL_UPLOAD,
+        {
+          folder: 'facility',
+          eager: 'c_crop,h_200,w_260',
+        },
+      )
 
-    getData()
-  }, [])
-  const [fileList, setFileList] = useState<UploadFile[]>([])
+      const { name, address, upload } = values
 
-  const onFinish: FormProps<CreateFacility>['onFinish'] = async (values) => {
-    const uploadRespone: {
-      signature: string
-      timestamp: string
-      folderName: string
-    } = await apiInstance.post(API_ENPOINTS.URL_UPLOAD, {
-      folderName: 'facility',
-    })
-    const formData = new FormData()
-    if (fileList.length > 0) {
-      formData.append('file', fileList[0] as FileType)
+      if (upload && upload.length > 0) {
+        const formData = new FormData()
+        formData.append('file', upload[0].originFileObj)
+
+        const { secure_url }: { secure_url: string } =
+          await apiCloudinaryInstance.post(presignedUrl, formData)
+
+        await apiInstance.post(API_ENPOINTS.FACILITY, {
+          name,
+          address,
+          imageUrl: secure_url,
+        })
+      } else {
+        message.success('Tải ảnh lên cloud thành công')
+      }
+
+      message.success(`Đã tạo thành công cơ sở ${name}`)
+    } catch (error) {
+      message.error('Có lỗi xảy ra khi tạo cơ sở mới')
     }
-    const res = await axios.post(
-      `https://api.cloudinary.com/v1_1/dsrg8wtvf/image/upload?api_key=878165361166532&timestamp=${uploadRespone?.timestamp}&folder=${uploadRespone.folderName}&signature=${uploadRespone?.signature}`,
-      formData,
-    )
-    console.log('hi', res)
   }
 
-  const props: UploadProps = {
-    onRemove: () => {
-      setFileList([])
-    },
-    beforeUpload: (file) => {
-      setFileList([file]) // Chỉ giữ lại file mới được chọn
-      return false
-    },
-    fileList,
-    maxCount: 1, // Giới hạn chỉ 1 file
+  const normFile = (e: any) => {
+    if (Array.isArray(e)) {
+      return e
+    }
+    return e?.fileList
   }
+
   return (
     <div>
       <Form
@@ -71,7 +57,7 @@ const CreateFacilityScreen = () => {
         // onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        <Form.Item<CreateFacility>
+        <Form.Item
           label="Tên cơ sở"
           name="name"
           rules={[{ required: true, message: 'Please input your username!' }]}
@@ -79,7 +65,7 @@ const CreateFacilityScreen = () => {
           <Input />
         </Form.Item>
 
-        <Form.Item<CreateFacility>
+        <Form.Item
           label="Địa chỉ"
           name="address"
           rules={[{ required: true, message: 'Please input your password!' }]}
@@ -87,16 +73,20 @@ const CreateFacilityScreen = () => {
           <Input />
         </Form.Item>
 
-        <Form.Item<CreateFacility>
-          name="file"
-          label="Image"
+        <Form.Item
+          name="upload"
+          label="Upload"
           valuePropName="fileList"
-          getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
-          // getValueFromEvent={normFile}
-          // extra="theodorebui"
+          getValueFromEvent={normFile}
+          extra="Chọn ảnh đại diện cho trung tâm"
         >
-          <Upload {...props}>
-            <Button icon={<TiUploadOutline />}>Click to upload</Button>
+          <Upload
+            name="logo"
+            listType="picture"
+            beforeUpload={() => false}
+            maxCount={1}
+          >
+            <Button icon={<UploadOutlined />}>Click to select file</Button>
           </Upload>
         </Form.Item>
 
