@@ -23,7 +23,7 @@ const Routers = () => {
           ),
         },
         {
-          path: '/facility',
+          path: ROUTE_PATHS.FACILITY,
           element: (
             <ProtectedRoute>
               <FacilityScreen />
@@ -31,10 +31,18 @@ const Routers = () => {
           ),
         },
         {
-          path: '/facility/create',
+          path: ROUTE_PATHS.FACILITY_CREATE,
           element: (
             <ProtectedRoute>
               <CreateFacilityScreen />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: ROUTE_PATHS.SYSTEM_ERROR,
+          element: (
+            <ProtectedRoute>
+              <SystemErrorScreen />
             </ProtectedRoute>
           ),
         },
