@@ -7,6 +7,7 @@ import { NotFoundScreen, SystemErrorScreen } from '../screens/ResultScreen'
 import AuthLayout from '../layouts/AuthLayout'
 import { LoginScreen } from '../screens/LoginScreen'
 import { CreateFacilityScreen, FacilityScreen } from '../screens/FacilityScreen'
+import FacilityDetailScreen from '../screens/FacilityScreen/FacilityDetailScreen'
 
 const Routers = () => {
   const router = createBrowserRouter([
@@ -31,10 +32,10 @@ const Routers = () => {
           ),
         },
         {
-          path: ROUTE_PATHS.FACILITY_CREATE,
+          path: ROUTE_PATHS.FACILITY_DETAIL,
           element: (
             <ProtectedRoute>
-              <CreateFacilityScreen />
+              <FacilityDetailScreen />
             </ProtectedRoute>
           ),
         },

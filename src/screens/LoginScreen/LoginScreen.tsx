@@ -14,8 +14,6 @@ const LoginScreen = () => {
   const validationRules = useYupValidation(loginFormSchema)
   const navigate = useNavigate()
   const onFinish: FormProps<LoginFormData>['onFinish'] = (values) => {
-    console.log(values)
-
     notification.success({
       message: 'Đăng nhập thành công',
       placement: 'bottomRight',

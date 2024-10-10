@@ -18,16 +18,16 @@ apiInstance.interceptors.response.use(
   (response) => {
     return response.data
   },
-  // (error) => {
-  //   if (error.response.status === 401) {
-  //     // signOut()
-  //   }
-  //   if ([500, 501, 502].includes(error.response.status)) {
-  //     window.location.href = ROUTE_PATHS.SYSTEM_ERROR
-  //   }
+  (error) => {
+    if (error.response.status === 401) {
+      // signOut()
+    }
+    if ([500, 501, 502].includes(error.response.status)) {
+      window.location.href = ROUTE_PATHS.SYSTEM_ERROR
+    }
 
-  //   return Promise.reject(error)
-  // },
+    return Promise.reject(error)
+  },
 )
 
 export default apiInstance

@@ -3,15 +3,17 @@ import { API_ENPOINTS } from '../../api/api.constants'
 import { Button, Form, FormProps, Input, Upload, message } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import apiCloudinaryInstance from '../../api/apiCloudinaryInstance'
-import { CreateFacility } from '../../types/facility.type'
+import { CreateFacilityFormProps } from '../../types/facility.type'
 import { useCreateFacility } from '../../api/api-hooks/facility'
-import { useNavigate } from 'react-router-dom'
-import { ROUTE_PATHS } from '../../routes/route-paths.constant'
 
-const CreateFacilityScreen = () => {
-  const { mutateAsync: createFacility, isPending, error } = useCreateFacility()
+const { TextArea } = Input
 
-  const navigate = useNavigate()
+export type DrawerProps = {
+  onClose: () => void
+}
+const CreateFacilityScreen = ({ onClose }: DrawerProps) => {
+  const { mutateAsync: createFacility, isPending = false } = useCreateFacility()
+
   const onFinish: FormProps['onFinish'] = async (values) => {
     try {
       const presignedUrl: string = await apiInstance.post(
@@ -41,7 +43,7 @@ const CreateFacilityScreen = () => {
           imageUrl: responseUploadImage.secure_url,
         })
 
-        navigate(ROUTE_PATHS.FACILITY)
+        onClose()
 
         message.success(`Đã tạo thành công cơ sở ${name}`)
       } else {
@@ -70,7 +72,7 @@ const CreateFacilityScreen = () => {
         // onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        <Form.Item<CreateFacility>
+        <Form.Item<CreateFacilityFormProps>
           label="Tên cơ sở"
           name="name"
           rules={[{ required: true, message: 'Vui lòng nhập tên cơ sở mới' }]}
@@ -78,17 +80,17 @@ const CreateFacilityScreen = () => {
           <Input />
         </Form.Item>
 
-        <Form.Item<CreateFacility>
+        <Form.Item<CreateFacilityFormProps>
           label="Địa chỉ"
           name="address"
           rules={[
             { required: true, message: 'Vui lòng nhập địa chỉ cơ sở mới' },
           ]}
         >
-          <Input />
+          <TextArea rows={3} />
         </Form.Item>
 
-        <Form.Item<CreateFacility>
+        <Form.Item<CreateFacilityFormProps>
           name="upload"
           label="Hình ảnh"
           valuePropName="fileList"
