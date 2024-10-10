@@ -3,8 +3,17 @@ import { API_ENPOINTS } from '../../api/api.constants'
 import { Button, Form, FormProps, Input, Upload, message } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import apiCloudinaryInstance from '../../api/apiCloudinaryInstance'
+import { CreateFacilityFormProps } from '../../types/facility.type'
+import { useCreateFacility } from '../../api/api-hooks/facility'
 
-const CreateFacilityScreen = () => {
+const { TextArea } = Input
+
+export type DrawerProps = {
+  onClose: () => void
+}
+const CreateFacilityScreen = ({ onClose }: DrawerProps) => {
+  const { mutateAsync: createFacility, isPending = false } = useCreateFacility()
+
   const onFinish: FormProps['onFinish'] = async (values) => {
     try {
       const presignedUrl: string = await apiInstance.post(
@@ -18,22 +27,28 @@ const CreateFacilityScreen = () => {
       const { name, address, upload } = values
 
       if (upload && upload.length > 0) {
+        if (upload[0].type !== 'image/jpeg' && upload[0].type !== 'image/png') {
+          message.warning('Vui lòng chọn file ảnh')
+          return
+        }
         const formData = new FormData()
         formData.append('file', upload[0].originFileObj)
 
-        const { secure_url }: { secure_url: string } =
+        const responseUploadImage: Record<string, string> =
           await apiCloudinaryInstance.post(presignedUrl, formData)
 
-        await apiInstance.post(API_ENPOINTS.FACILITY, {
+        await createFacility({
           name,
           address,
-          imageUrl: secure_url,
+          imageUrl: responseUploadImage.secure_url,
         })
-      } else {
-        message.success('Tải ảnh lên cloud thành công')
-      }
 
-      message.success(`Đã tạo thành công cơ sở ${name}`)
+        onClose()
+
+        message.success(`Đã tạo thành công cơ sở ${name}`)
+      } else {
+        message.error('Chưa chọn ảnh')
+      }
     } catch (error) {
       message.error('Có lỗi xảy ra khi tạo cơ sở mới')
     }
@@ -57,28 +72,33 @@ const CreateFacilityScreen = () => {
         // onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        <Form.Item
+        <Form.Item<CreateFacilityFormProps>
           label="Tên cơ sở"
           name="name"
-          rules={[{ required: true, message: 'Please input your username!' }]}
+          rules={[{ required: true, message: 'Vui lòng nhập tên cơ sở mới' }]}
         >
           <Input />
         </Form.Item>
 
-        <Form.Item
+        <Form.Item<CreateFacilityFormProps>
           label="Địa chỉ"
           name="address"
-          rules={[{ required: true, message: 'Please input your password!' }]}
+          rules={[
+            { required: true, message: 'Vui lòng nhập địa chỉ cơ sở mới' },
+          ]}
         >
-          <Input />
+          <TextArea rows={3} />
         </Form.Item>
 
-        <Form.Item
+        <Form.Item<CreateFacilityFormProps>
           name="upload"
-          label="Upload"
+          label="Hình ảnh"
           valuePropName="fileList"
           getValueFromEvent={normFile}
-          extra="Chọn ảnh đại diện cho trung tâm"
+          // extra="Chọn ảnh đại diện cho trung tâm"
+          rules={[
+            { required: true, message: 'Vui lòng chọn ảnh cho cơ sở mới' },
+          ]}
         >
           <Upload
             name="logo"
@@ -86,12 +106,12 @@ const CreateFacilityScreen = () => {
             beforeUpload={() => false}
             maxCount={1}
           >
-            <Button icon={<UploadOutlined />}>Click to select file</Button>
+            <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
           </Upload>
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={isPending}>
             Submit
           </Button>
         </Form.Item>

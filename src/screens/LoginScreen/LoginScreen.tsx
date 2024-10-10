@@ -1,18 +1,19 @@
-import { Button, Form, FormProps, Input, notification } from 'antd'
+import { Button, Form, FormProps, Input, message, notification } from 'antd'
 import { LoginFormData, Token, UserData } from '../../types/auth.type'
 import './style.css'
 import useAppStore from '../../stores/app.store'
 import { useNavigate } from 'react-router-dom'
 import { ROUTE_PATHS } from '../../routes/route-paths.constant'
+import useYupValidation from '../../hooks/useYupValidation'
+import loginFormSchema from './loginForm.validation'
 
 const DUMMY_CREDENTIALS = { username: 'dummy_id', password: '12345' }
 
 const LoginScreen = () => {
   const { setCurrentUser } = useAppStore()
+  const validationRules = useYupValidation(loginFormSchema)
   const navigate = useNavigate()
   const onFinish: FormProps<LoginFormData>['onFinish'] = (values) => {
-    console.log(values)
-
     notification.success({
       message: 'Đăng nhập thành công',
       placement: 'bottomRight',
@@ -42,7 +43,7 @@ const LoginScreen = () => {
         <Form.Item<LoginFormData>
           label={'Tên đăng nhập'}
           name="username"
-          // rules={[validationRules]}
+          rules={[validationRules]}
         >
           <Input />
         </Form.Item>
@@ -50,7 +51,7 @@ const LoginScreen = () => {
         <Form.Item<LoginFormData>
           label={'Mật khẩu'}
           name="password"
-          // rules={[validationRules]}
+          rules={[validationRules]}
         >
           <Input.Password />
         </Form.Item>

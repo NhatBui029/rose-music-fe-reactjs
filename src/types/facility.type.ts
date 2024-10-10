@@ -1,5 +1,16 @@
-export type CreateFacility = {
+export type Facility = {
+  id: number
   name: string
   address: string
-  upload: string
+  imageUrl: string
+}
+
+export type CreateFacilityFormProps = Omit<Facility, 'id' | 'imageUrl'> & {
+  upload: File
+}
+
+export type FacilityForm = Omit<Facility, 'id'>
+
+export type FacilitysResponse = {
+  data: Facility[]
 }
