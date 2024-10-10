@@ -1,12 +1,23 @@
-import { Col, Flex, Image, Row, Typography } from 'antd'
+import { Button, Col, Drawer, Flex, Image, Row, Typography } from 'antd'
 import { useParams } from 'react-router-dom'
 import { useGetFacilityDetail } from '../../api/api-hooks/facility'
+import { useState } from 'react'
+import CreateRoomScreen from './CreateRoomScreen'
 
-const { Text } = Typography
+const { Text, Title } = Typography
 const FacilityDetailScreen = () => {
   const { id } = useParams()
   const { data: facility } = useGetFacilityDetail(Number(id))
-  console.log('🚀 ~ FacilityDetailScreen ~ facility:', facility)
+  const [open, setOpen] = useState(false)
+
+  const showDrawer = () => {
+    setOpen(true)
+  }
+
+  const onClose = () => {
+    setOpen(false)
+  }
+
   return (
     <Row gutter={20}>
       <Col span={14}>
@@ -17,7 +28,18 @@ const FacilityDetailScreen = () => {
         </Flex>
       </Col>
       <Col span={10}>
-        <div>right</div>
+        <Flex justify="space-around">
+          <Title level={3}>Danh sách phòng học</Title>
+          <Button onClick={showDrawer}>Thêm</Button>
+        </Flex>
+        <Drawer
+          title="Tạo phòng học mới"
+          onClose={onClose}
+          open={open}
+          width={500}
+        >
+          <CreateRoomScreen id={Number(id)} onClose={onClose} />
+        </Drawer>
       </Col>
     </Row>
   )

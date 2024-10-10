@@ -1,6 +1,5 @@
 import { Button, Card, Drawer, Flex, Image, Typography } from 'antd'
 import { BsEyeFill, BsHouseCheck } from 'react-icons/bs'
-import { IoSettingsOutline } from 'react-icons/io5'
 import { MdModeEditOutline } from 'react-icons/md'
 import { Link, generatePath } from 'react-router-dom'
 import { ROUTE_PATHS } from '../../routes/route-paths.constant'
