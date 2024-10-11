@@ -3,4 +3,5 @@ export const API_ENPOINTS = {
   FACILITY: '/facility',
   FACILITY_DETAIL: (id: number) => `/facility/${id}`,
   ROOM: (id: number) => `/facility/${id}/room`,
+  INSTRUMENT: (id: number) => `/facility/${id}/instrument`,
 }

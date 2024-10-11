@@ -85,7 +85,7 @@ const CreateRoomScreen = ({ id, onClose }: CreateRoomDrawerProps) => {
           <Input />
         </Form.Item>
 
-        <Form.Item<CreateRoomFormProps> label="Ghi chú" name="address">
+        <Form.Item<CreateRoomFormProps> label="Ghi chú" name="note">
           <TextArea rows={3} />
         </Form.Item>
 
