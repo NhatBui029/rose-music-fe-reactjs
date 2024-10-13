@@ -1,9 +1,6 @@
+import { ResponseGetListApi } from './../../types/facility.type'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import {
-  Facility,
-  FacilityForm,
-  FacilitysResponse,
-} from '../../types/facility.type'
+import { Facility, BodyFormData } from '../../types/facility.type'
 import { API_ENPOINTS } from '../api.constants'
 import apiInstance from '../apiInstance'
 import { AxiosError } from 'axios'
@@ -11,12 +8,16 @@ import { AxiosError } from 'axios'
 const GET_FACILITY_QUERY_KEY = 'GET_FACILITY'
 const GET_FACILITY_DETAIL_QUERY_KEY = 'GET_FACILITY_DETAIL'
 
+type FacilityForm = BodyFormData<Facility>
+
 const createFacility = (data: FacilityForm) => {
   return apiInstance.post<FacilityForm, void>(API_ENPOINTS.FACILITY, data)
 }
 
 const getFacilitys = () => {
-  return apiInstance.get<void, FacilitysResponse>(API_ENPOINTS.FACILITY)
+  return apiInstance.get<void, ResponseGetListApi<Facility>>(
+    API_ENPOINTS.FACILITY,
+  )
 }
 
 const getFacilityDetail = (id: number) => {
@@ -30,7 +31,7 @@ export const useCreateFacility = () => {
 }
 
 export const useGetFacilitys = () => {
-  return useQuery<FacilitysResponse, AxiosError>({
+  return useQuery<ResponseGetListApi<Facility>, AxiosError>({
     queryKey: [GET_FACILITY_QUERY_KEY],
     queryFn: getFacilitys,
   })

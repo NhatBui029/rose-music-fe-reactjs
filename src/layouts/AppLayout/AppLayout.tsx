@@ -206,7 +206,9 @@ const AppLayout = () => {
             </Button>
           </Sider>
           <Layout>
-            <Content>
+            <Content 
+            // style={{ height: '800px', overflowY: 'scroll' }}
+            >
               <div
                 style={{
                   backgroundColor: '#fff',

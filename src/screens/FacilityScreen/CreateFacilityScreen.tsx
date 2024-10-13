@@ -3,14 +3,15 @@ import { API_ENPOINTS } from '../../api/api.constants'
 import { Button, Form, FormProps, Input, Upload, message } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import apiCloudinaryInstance from '../../api/apiCloudinaryInstance'
-import { CreateFacilityFormProps } from '../../types/facility.type'
+import {
+  CreateEditFormItems,
+  DrawerProps,
+  Facility,
+} from '../../types/facility.type'
 import { useCreateFacility } from '../../api/api-hooks/facility'
 
 const { TextArea } = Input
 
-export type DrawerProps = {
-  onClose: () => void
-}
 const CreateFacilityScreen = ({ onClose }: DrawerProps) => {
   const { mutateAsync: createFacility, isPending = false } = useCreateFacility()
 
@@ -72,7 +73,7 @@ const CreateFacilityScreen = ({ onClose }: DrawerProps) => {
         // onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        <Form.Item<CreateFacilityFormProps>
+        <Form.Item<CreateEditFormItems<Facility>>
           label="Tên cơ sở"
           name="name"
           rules={[{ required: true, message: 'Vui lòng nhập tên cơ sở mới' }]}
@@ -80,7 +81,7 @@ const CreateFacilityScreen = ({ onClose }: DrawerProps) => {
           <Input />
         </Form.Item>
 
-        <Form.Item<CreateFacilityFormProps>
+        <Form.Item<CreateEditFormItems<Facility>>
           label="Địa chỉ"
           name="address"
           rules={[
@@ -90,7 +91,7 @@ const CreateFacilityScreen = ({ onClose }: DrawerProps) => {
           <TextArea rows={3} />
         </Form.Item>
 
-        <Form.Item<CreateFacilityFormProps>
+        <Form.Item<CreateEditFormItems<Facility>>
           name="upload"
           label="Hình ảnh"
           valuePropName="fileList"

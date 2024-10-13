@@ -22,25 +22,28 @@ export type Instrument = {
   status: StatusInstrumentEnum
 }
 
-export type CreateFacilityFormProps = Omit<Facility, 'id' | 'imageUrl'> & {
-  upload: File
+export type CreateEditFormItems<T> = Omit<T, 'id' | 'imageUrl'> & {
+  upload?: File
 }
 
-export type CreateRoomFormProps = Omit<Room, 'id' | 'imageUrl'> & {
-  upload: File
+export type BodyFormData<T> = Omit<T, 'id'> & {
+  facilityId?: number
 }
 
-export type CreateInstrumentFormProps = Omit<Instrument, 'id' | 'imageUrl'> & {
-  upload: File
+export type ResponseGetListApi<T> = {
+  data: T[]
+  meta?: {
+    total: number
+    page: number
+    pageSize: number
+  }
 }
 
-export type FacilityForm = Omit<Facility, 'id'>
-
-export type RoomForm = Omit<Room, 'id'>
-export type InstrumentForm = Omit<Instrument, 'id'>
-
-export type FacilitysResponse = {
-  data: Facility[]
+export type ResponseGetDetail<T> = T & {
+  createdAt?: string
+  updatedAt?: string
+  deletedAt?: string
+  facilityId: number
 }
 
 export enum MusicalInstrumentEnum {
@@ -53,4 +56,15 @@ export enum StatusInstrumentEnum {
   NEW = 'Mới',
   USING = 'Đang sử dụng',
   USED = 'Đã qua sử dụng',
+}
+
+export type DrawerProps = {
+  onClose: () => void
+}
+
+export type CreateEditFormProps<T> = {
+  onFinish: (values: any) => void
+  normFile: (e: any) => void
+  isPending: boolean
+  data?: T
 }

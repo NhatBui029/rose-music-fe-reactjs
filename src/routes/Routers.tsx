@@ -8,6 +8,10 @@ import AuthLayout from '../layouts/AuthLayout'
 import { LoginScreen } from '../screens/LoginScreen'
 import { CreateFacilityScreen, FacilityScreen } from '../screens/FacilityScreen'
 import FacilityDetailScreen from '../screens/FacilityScreen/FacilityDetailScreen'
+import CreateRoomScreen from '../screens/FacilityScreen/room/CreateRoomScreen'
+import CreateInstrumentScreen from '../screens/FacilityScreen/CreateInstrumentScreen'
+import EditRoomScreen from '../screens/FacilityScreen/room/EditRoomScreen'
+import EditInstrumentScreen from '../screens/FacilityScreen/EditInstrumentScreen'
 
 const Routers = () => {
   const router = createBrowserRouter([
@@ -36,6 +40,38 @@ const Routers = () => {
           element: (
             <ProtectedRoute>
               <FacilityDetailScreen />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: ROUTE_PATHS.ROOM_CREATE,
+          element: (
+            <ProtectedRoute>
+              <CreateRoomScreen />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: ROUTE_PATHS.ROOM_EDIT,
+          element: (
+            <ProtectedRoute>
+              <EditRoomScreen />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: ROUTE_PATHS.INSTRUMENT_CREATE,
+          element: (
+            <ProtectedRoute>
+              <CreateInstrumentScreen />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: ROUTE_PATHS.INSTRUMENT_EDIT,
+          element: (
+            <ProtectedRoute>
+              <EditInstrumentScreen />
             </ProtectedRoute>
           ),
         },

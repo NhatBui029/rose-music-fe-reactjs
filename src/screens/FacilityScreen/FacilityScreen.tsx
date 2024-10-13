@@ -36,7 +36,7 @@ const FacilityScreen = () => {
             actions={[
               <Link
                 to={generatePath(ROUTE_PATHS.FACILITY_DETAIL, {
-                  id: facility.id,
+                  facilityId: facility.id ,
                 })}
               >
                 <BsEyeFill key="view" />
