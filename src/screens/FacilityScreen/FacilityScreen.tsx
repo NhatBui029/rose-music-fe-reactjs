@@ -2,10 +2,10 @@ import { Button, Card, Drawer, Flex, Image, Typography } from 'antd'
 import { BsEyeFill, BsHouseCheck } from 'react-icons/bs'
 import { MdModeEditOutline } from 'react-icons/md'
 import { Link, generatePath } from 'react-router-dom'
-import { ROUTE_PATHS } from '../../routes/route-paths.constant'
 import { useState } from 'react'
 import CreateFacilityScreen from './CreateFacilityScreen'
-import { useGetFacilitys } from '../../api/api-hooks/facility'
+import { useGetFacilitys } from '@api/api-hooks/facility'
+import { ROUTE_PATHS } from '@routes/route-paths.constant'
 
 const { Meta } = Card
 
@@ -36,7 +36,7 @@ const FacilityScreen = () => {
             actions={[
               <Link
                 to={generatePath(ROUTE_PATHS.FACILITY_DETAIL, {
-                  facilityId: facility.id ,
+                  facilityId: facility.id,
                 })}
               >
                 <BsEyeFill key="view" />

@@ -10,6 +10,14 @@ export type Room = {
   name: string
   note: string
   imageUrl: string
+  roomInstruments?: RoomInstrument[]
+}
+
+export type RoomInstrument = {
+  instrumentId: number
+  quantity: number
+  id?: number
+  roomId?: number
 }
 
 export type Instrument = {

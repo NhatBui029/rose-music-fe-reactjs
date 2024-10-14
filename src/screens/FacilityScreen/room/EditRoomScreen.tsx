@@ -11,12 +11,11 @@ import { ROUTE_PATHS } from '../../../routes/route-paths.constant'
 const EditRoomScreen = () => {
   const { facilityId, roomId } = useParams()
   const navigate = useNavigate()
-  let imageUrl: string
+  let imageUrl = import.meta.env.VITE_API_DEFAULT_IMAGE_URL
 
   const { data: room } = useGetRoomDetail(Number(facilityId), Number(roomId))
 
   const [openDrawerCreateRoom, setOpenDrawerCreateRoom] = useState(true)
-
 
   const onCloseCreateRoom = () => {
     setOpenDrawerCreateRoom(false)
@@ -33,7 +32,7 @@ const EditRoomScreen = () => {
 
   const onFinish: FormProps['onFinish'] = async (values) => {
     try {
-      const { name, note, upload } = values
+      const { name, note, upload, roomInstruments } = values
 
       if (upload && upload.length > 0) {
         if (upload[0].type !== 'image/jpeg' && upload[0].type !== 'image/png') {
@@ -63,6 +62,7 @@ const EditRoomScreen = () => {
         note,
         imageUrl,
         facilityId: Number(facilityId),
+        roomInstruments,
       })
 
       onCloseCreateRoom()
@@ -85,7 +85,7 @@ const EditRoomScreen = () => {
       title={`Sửa phòng học ${room?.name}`}
       onClose={onCloseCreateRoom}
       open={openDrawerCreateRoom}
-      width={500}
+      width={600}
     >
       <FormCreateEditRoom
         onFinish={onFinish}

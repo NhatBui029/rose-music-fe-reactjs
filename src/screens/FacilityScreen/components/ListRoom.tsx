@@ -1,5 +1,5 @@
-import { Drawer, Image, List, Space } from 'antd'
-import React, { useState } from 'react'
+import { Image, List, Space, Tooltip } from 'antd'
+import React from 'react'
 import { BiMessageRounded } from 'react-icons/bi'
 import { GrStarOutline } from 'react-icons/gr'
 import { LiaKeySolid } from 'react-icons/lia'
@@ -17,16 +17,6 @@ export const IconText = ({ icon, text }: { icon: React.FC; text?: string }) => (
 const ListRoom = ({ data: rooms }: { data?: ResponseGetListApi<Room> }) => {
   const { facilityId } = useParams()
 
-  const [openDrawerEditRoom, setOpenDrawerEditRoom] = useState(false)
-
-  const showDrawerEditRoom = () => {
-    setOpenDrawerEditRoom(true)
-  }
-
-  const onCloseEditRoom = () => {
-    setOpenDrawerEditRoom(false)
-    // refetchGetRooms()
-  }
   return (
     <>
       <List
@@ -76,7 +66,9 @@ const ListRoom = ({ data: rooms }: { data?: ResponseGetListApi<Room> }) => {
                     roomId: item.id,
                   })}
                 >
-                  {item.name}
+                  <Tooltip title="Bấm để sửa" color="blue">
+                    {item.name}
+                  </Tooltip>
                 </Link>
               }
               description={item.note}

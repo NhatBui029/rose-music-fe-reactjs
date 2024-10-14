@@ -1,5 +1,14 @@
-import { Button, Form, Input, Upload } from 'antd'
-import { UploadOutlined } from '@ant-design/icons'
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Row,
+  Select,
+  Typography,
+  Upload,
+} from 'antd'
 import {
   CreateEditFormItems,
   CreateEditFormProps,
@@ -7,6 +16,13 @@ import {
   Room,
 } from '../../../types/facility.type'
 import { useEffect } from 'react'
+import { useGetInstruments } from '../../../api/api-hooks/instrument'
+import { useParams } from 'react-router-dom'
+import useYupValidation from '../../../hooks/useYupValidation'
+import { createRoomSchema } from '../room/room.schema'
+import { MdDelete } from 'react-icons/md'
+import { E2VstatusInstrument } from '../ultis'
+import { IoMdCloudUpload } from 'react-icons/io'
 
 const { TextArea } = Input
 
@@ -17,14 +33,22 @@ const FormCreateEditRoom = ({
   isPending,
   data,
 }: RoomCreateEditFormProps) => {
+  const { facilityId } = useParams()
+  const { data: instrumentOptions } = useGetInstruments(Number(facilityId))
   const [form] = Form.useForm()
+  const validationRule = useYupValidation(createRoomSchema(instrumentOptions))
 
-  // Khi `data` có sự thay đổi, form sẽ được cập nhật giá trị
   useEffect(() => {
     if (data) {
       form.setFieldsValue({
         name: data.name,
         note: data.note,
+        roomInstruments: data?.roomInstruments?.map((roomInstrument) => {
+          return {
+            instrumentId: roomInstrument.instrumentId,
+            quantity: roomInstrument.quantity,
+          }
+        }),
       })
     }
   }, [data, form])
@@ -79,9 +103,70 @@ const FormCreateEditRoom = ({
             beforeUpload={() => false}
             maxCount={1}
           >
-            <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
+            <Button icon={<IoMdCloudUpload />}>Chọn ảnh</Button>
           </Upload>
         </Form.Item>
+
+        <Form.List name="roomInstruments">
+          {(fields, { add, remove }) => (
+            <>
+              <Row gutter={[8, 8]} style={{ marginBottom: 10 }}>
+                <Col span={19}>
+                  <Typography.Title level={5}>
+                    Danh sách nhạc cụ
+                  </Typography.Title>
+                </Col>
+                <Col span={5}>
+                  <Button onClick={() => add()}>Thêm</Button>
+                </Col>
+              </Row>
+              {fields.map(({ key, name, ...restField }) => (
+                <Row gutter={[8, 8]} key={key}>
+                  <Col span={14}>
+                    <Form.Item
+                      {...restField}
+                      name={[name, 'instrumentId']}
+                      rules={[
+                        { required: true, message: 'Vui lòng nhập dụng cụ' },
+                      ]}
+                    >
+                      <Select
+                        showSearch
+                        placeholder="Chọn nhạc cụ"
+                        optionFilterProp="label"
+                        style={{ width: 300 }}
+                        options={instrumentOptions?.data.map((inst) => {
+                          const status = E2VstatusInstrument(inst.status)
+                          return {
+                            value: inst.id,
+                            label: `${inst.name}(${status}-${inst.countInStock})`,
+                          }
+                        })}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={5}>
+                    <Form.Item
+                      {...restField}
+                      name={[name, 'quantity']}
+                      rules={[validationRule]}
+                      initialValue={1}
+                    >
+                      <InputNumber min={1} style={{ width: 100 }} />
+                    </Form.Item>
+                  </Col>
+                  <Col span={5}>
+                    <Form.Item>
+                      <Button onClick={() => remove(name)}>
+                        <MdDelete />
+                      </Button>
+                    </Form.Item>
+                  </Col>
+                </Row>
+              ))}
+            </>
+          )}
+        </Form.List>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit" loading={isPending}>

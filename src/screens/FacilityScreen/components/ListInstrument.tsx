@@ -1,4 +1,4 @@
-import { Col, Image, List, Row } from 'antd'
+import { Col, Image, List, Row, Tooltip } from 'antd'
 import {
   Instrument,
   ResponseGetListApi,
@@ -25,8 +25,8 @@ const ListInstrument = ({
             key={item.id}
             extra={
               <Image
-                // width={272}
-                height={100}
+                width={150}
+                // height={100}
                 alt="logo"
                 src={item.imageUrl}
               />
@@ -40,7 +40,9 @@ const ListInstrument = ({
                     instrumentId: item.id,
                   })}
                 >
-                  {item.name}
+                  <Tooltip title="Bấm để sửa" color="blue">
+                    {item.name}
+                  </Tooltip>
                 </Link>
               }
               description={

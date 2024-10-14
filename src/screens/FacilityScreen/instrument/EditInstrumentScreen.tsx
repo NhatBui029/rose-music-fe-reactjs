@@ -1,15 +1,15 @@
-import apiInstance from '../../api/apiInstance'
-import { API_ENPOINTS } from '../../api/api.constants'
+import apiInstance from '../../../api/apiInstance'
+import { API_ENPOINTS } from '../../../api/api.constants'
 import { Drawer, FormProps, message } from 'antd'
-import apiCloudinaryInstance from '../../api/apiCloudinaryInstance'
+import apiCloudinaryInstance from '../../../api/apiCloudinaryInstance'
 import {
   useEditIntrument,
   useGetInstrumentDetail,
-} from '../../api/api-hooks/instrument'
-import FormCreateEditInstrument from './components/FormCreateEditInstrument'
+} from '../../../api/api-hooks/instrument'
+import FormCreateEditInstrument from '../components/FormCreateEditInstrument'
 import { useState } from 'react'
 import { generatePath, useNavigate, useParams } from 'react-router-dom'
-import { ROUTE_PATHS } from '../../routes/route-paths.constant'
+import { ROUTE_PATHS } from '../../../routes/route-paths.constant'
 
 const EditInstrumentScreen = () => {
   const { facilityId, instrumentId } = useParams()

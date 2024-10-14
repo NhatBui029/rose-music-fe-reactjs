@@ -1,12 +1,12 @@
 import { Button, Col, Flex, Image, Row, Typography } from 'antd'
 import { generatePath, useNavigate, useParams } from 'react-router-dom'
-import { useGetFacilityDetail } from '../../api/api-hooks/facility'
 import ListInstrument from './components/ListInstrument'
 import ListRoom, { IconText } from './components/ListRoom'
-import { useGetRooms } from '../../api/api-hooks/room'
 import { FaLocationDot } from 'react-icons/fa6'
-import { useGetInstruments } from '../../api/api-hooks/instrument'
-import { ROUTE_PATHS } from '../../routes/route-paths.constant'
+import { useGetRooms } from '@api/api-hooks/room'
+import { useGetInstruments } from '@api/api-hooks/instrument'
+import { useGetFacilityDetail } from '@api/api-hooks/facility'
+import { ROUTE_PATHS } from '@routes/route-paths.constant'
 
 const { Title } = Typography
 

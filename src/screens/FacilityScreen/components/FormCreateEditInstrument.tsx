@@ -9,6 +9,7 @@ import {
   StatusInstrumentEnum,
 } from '../../../types/facility.type'
 import { useEffect } from 'react'
+import { E2VstatusInstrument } from '../ultis'
 const { Option } = Select
 
 type InstrumentCreateEditFormProps = CreateEditFormProps<
@@ -83,7 +84,7 @@ const FormCreateEditInstrument = ({
           <Select placeholder="Tình trạng thiết bị">
             {Object.keys(StatusInstrumentEnum).map((key, idx) => (
               <Option value={key} key={idx}>
-                {StatusInstrumentEnum[key as keyof typeof StatusInstrumentEnum]}
+                {E2VstatusInstrument(key)}
               </Option>
             ))}
           </Select>
