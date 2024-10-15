@@ -1,75 +1,67 @@
-import { Button, Flex, Modal, Table, Typography } from 'antd'
+import { Avatar, Button, Flex, Modal, Table, Typography } from 'antd'
 import { useState } from 'react'
 import CreateStudentScreeen from './CreateStudentScreeen'
 import { useGetStudents } from '@api/api-hooks/student'
 import { Student } from 'src/types/student.type'
 const columns = [
   {
-    title: 'ID',
-    dataIndex: 'id',
-    key: 'id',
-    width: '10%',
-    sorter: {
-      compare: (first: Student, second: Student) => first.id - second.id,
-      multiple: 3,
+    // title: 'ID',
+    dataIndex: 'imageUrl',
+    key: 'imageUrl',
+    render: (text: string) => {
+      return <Avatar src={text} />
     },
   },
   {
     title: 'Mã học viên',
     dataIndex: 'code',
     key: 'code',
-    // width: '10%',
+    // width: '15%',
     sorter: {
       compare: (first: Student, second: Student) =>
         first.code.localeCompare(second.code),
       multiple: 3,
     },
   },
-
   {
-    title: 'Nhiệt độ',
-    key: 'temperature',
-    dataIndex: 'temperature',
-    // sorter: {
-    //   compare: (a, b) => a.temperature - b.temperature,
-    //   multiple: 3,
-    // },
+    title: 'Tên',
+    key: 'name',
+    dataIndex: 'name',
+    sorter: {
+      compare: (first: Student, second: Student) =>
+        first.name.localeCompare(second.name),
+      multiple: 3,
+    },
   },
   {
-    title: 'Độ ẩm',
-    key: 'humidity',
-    dataIndex: 'humidity',
-    // sorter: {
-    //   compare: (a, b) => a.humidity - b.humidity,
-    //   multiple: 3,
-    // },
+    title: 'Ngày sinh',
+    key: 'dateOfBirth',
+    dataIndex: 'dateOfBirth',
+    sorter: {
+      compare: (first: Student, second: Student) =>
+        first.dateOfBirth.localeCompare(second.dateOfBirth),
+      multiple: 3,
+    },
   },
   {
-    title: 'Ánh sáng',
-    key: 'light',
-    dataIndex: 'light',
-    // sorter: {
-    //   compare: (a, b) => a.light - b.light,
-    //   multiple: 3,
-    // },
+    title: 'Giới tính',
+    key: 'sex',
+    dataIndex: 'sex',
+    sorter: {
+      compare: (first: Student, second: Student) =>
+        first.sex.localeCompare(second.sex),
+      multiple: 3,
+    },
   },
   {
-    title: 'Gas',
-    key: 'Gas',
-    dataIndex: 'gas',
-    // sorter: {
-    //   compare: (a, b) => a.gas - b.gas,
-    //   multiple: 3,
-    // },
-  },
-  {
-    title: 'Thời gian',
-    key: 'time',
-    dataIndex: 'time',
-    // sorter: {
-    //   compare: (a, b) => a.time.toString().localeCompare(b.time.toString()),
-    //   multiple: 3,
-    // },
+    title: 'Số điện thoại',
+    key: 'phoneNumber',
+    dataIndex: 'phoneNumber',
+    sorter: {
+      compare: (first: Student, second: Student) =>
+        first.phoneNumber.localeCompare(second.phoneNumber),
+      multiple: 3,
+    },
   },
 ]
 const StudentScreen = () => {
