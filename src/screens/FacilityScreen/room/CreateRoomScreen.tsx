@@ -51,20 +51,19 @@ const CreateRoomScreen = () => {
           await apiCloudinaryInstance.post(presignedUrl, formData)
 
         imageUrl = responseUploadImage.secure_url
+        await createRoom({
+          name,
+          note,
+          imageUrl,
+          roomInstruments,
+        })
+
+        onCloseCreateRoom()
+
+        message.success(`Đã tạo thành công phòng học ${name}`)
       } else {
         message.error('Chưa chọn ảnh')
       }
-
-      await createRoom({
-        name,
-        note,
-        imageUrl,
-        roomInstruments,
-      })
-
-      onCloseCreateRoom()
-
-      message.success(`Đã tạo thành công phòng học ${name}`)
     } catch (error) {
       message.error('Có lỗi xảy ra khi tạo phòng học mới')
     }

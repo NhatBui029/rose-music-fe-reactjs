@@ -11,6 +11,7 @@ export type Room = {
   note: string
   imageUrl: string
   roomInstruments?: RoomInstrument[]
+  facilityId?: number
 }
 
 export type RoomInstrument = {
@@ -28,6 +29,7 @@ export type Instrument = {
   imageUrl: string
   type: MusicalInstrumentEnum
   status: StatusInstrumentEnum
+  facilityId?: number
 }
 
 export type CreateEditFormItems<T> = Omit<T, 'id' | 'imageUrl'> & {
@@ -39,7 +41,7 @@ export type BodyFormData<T> = Omit<T, 'id'> & {
 }
 
 export type ResponseGetListApi<T> = {
-  data: T[]
+  data: ResponseGetDetail<T>[]
   meta?: {
     total: number
     page: number
@@ -51,7 +53,6 @@ export type ResponseGetDetail<T> = T & {
   createdAt?: string
   updatedAt?: string
   deletedAt?: string
-  facilityId: number
 }
 
 export enum MusicalInstrumentEnum {
@@ -66,7 +67,7 @@ export enum StatusInstrumentEnum {
   USED = 'Đã qua sử dụng',
 }
 
-export type DrawerProps = {
+export type ComponentChildProps = {
   onClose: () => void
 }
 

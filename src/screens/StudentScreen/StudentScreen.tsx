@@ -1,25 +1,29 @@
 import { Button, Flex, Modal, Table, Typography } from 'antd'
 import { useState } from 'react'
 import CreateStudentScreeen from './CreateStudentScreeen'
+import { useGetStudents } from '@api/api-hooks/student'
+import { Student } from 'src/types/student.type'
 const columns = [
-  {
-    title: 'STT',
-    dataIndex: 'stt',
-    key: 'stt',
-    width: '10%',
-    // sorter: {
-    //   compare: (a, b) => a.stt - b.stt,
-    //   multiple: 3,
-    // },
-  },
   {
     title: 'ID',
     dataIndex: 'id',
     key: 'id',
-    // sorter: {
-    //   compare: (a, b) => a.id - b.id,
-    //   multiple: 3,
-    // },
+    width: '10%',
+    sorter: {
+      compare: (first: Student, second: Student) => first.id - second.id,
+      multiple: 3,
+    },
+  },
+  {
+    title: 'Mã học viên',
+    dataIndex: 'code',
+    key: 'code',
+    // width: '10%',
+    sorter: {
+      compare: (first: Student, second: Student) =>
+        first.code.localeCompare(second.code),
+      multiple: 3,
+    },
   },
 
   {
@@ -70,16 +74,13 @@ const columns = [
 ]
 const StudentScreen = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const { data: students } = useGetStudents()
 
   const showModal = () => {
     setIsModalOpen(true)
   }
 
-  const handleOk = () => {
-    setIsModalOpen(false)
-  }
-
-  const handleCancel = () => {
+  const onCloseModal = () => {
     setIsModalOpen(false)
   }
 
@@ -93,7 +94,7 @@ const StudentScreen = () => {
       </Flex>
       <Table
         columns={columns}
-        dataSource={[]}
+        dataSource={students?.data}
         pagination={{
           position: ['topRight'],
           current: 1,
@@ -115,9 +116,9 @@ const StudentScreen = () => {
         title="Thêm học viên mới"
         open={isModalOpen}
         footer={false}
-        onCancel={handleCancel}
+        onCancel={onCloseModal}
       >
-        <CreateStudentScreeen />
+        <CreateStudentScreeen onClose={onCloseModal} />
       </Modal>
     </div>
   )

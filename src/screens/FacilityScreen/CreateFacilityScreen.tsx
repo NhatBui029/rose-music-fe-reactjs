@@ -5,14 +5,14 @@ import { UploadOutlined } from '@ant-design/icons'
 import apiCloudinaryInstance from '../../api/apiCloudinaryInstance'
 import {
   CreateEditFormItems,
-  DrawerProps,
+  ComponentChildProps,
   Facility,
 } from '../../types/facility.type'
 import { useCreateFacility } from '../../api/api-hooks/facility'
 
 const { TextArea } = Input
 
-const CreateFacilityScreen = ({ onClose }: DrawerProps) => {
+const CreateFacilityScreen = ({ onClose }: ComponentChildProps) => {
   const { mutateAsync: createFacility, isPending = false } = useCreateFacility()
 
   const onFinish: FormProps['onFinish'] = async (values) => {

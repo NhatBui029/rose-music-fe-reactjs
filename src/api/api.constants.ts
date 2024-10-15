@@ -14,4 +14,6 @@ export const API_ENPOINTS = {
     `/facility/${facilityId}/instruments/${instrumentId}`,
   INSTRUMENT_EDIT: (facilityId: number, intrumentId: number) =>
     `/facility/${facilityId}/instruments/${intrumentId}`,
+  STUDENT: '/student',
+  STUDENT_DETAIL: (studentId: number) => `/student/${studentId}`,
 }

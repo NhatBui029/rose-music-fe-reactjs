@@ -2,7 +2,7 @@ import * as yup from 'yup'
 
 const createStudentSchema = yup.object().shape({
   name: yup.string().required('Vui lòng nhập tên'),
-  nickname: yup.string().required('Vui lòng nhập biệt danh'),
+  nickname: yup.string(),
   sex: yup
     .string()
     .oneOf(['BOY', 'GIRL'], 'Giới tính phải là BOY hoặc GIRL')
@@ -13,10 +13,7 @@ const createStudentSchema = yup.object().shape({
     .typeError('Ngày sinh phải có định dạng yyyy-mm-dd'),
   address: yup.string().required('Vui lòng nhập địa chỉ'),
   facilityId: yup.number().required('Vui lòng chọn cơ sở theo học'),
-  email: yup
-    .string()
-    .email('Email không hợp lệ')
-    .required('Vui lòng nhập email'),
+  email: yup.string().email('Email không hợp lệ'),
   phoneNumber: yup
     .string()
     .matches(/^\d{10}$/, 'Số điện thoại phải đúng 10 chữ số')
