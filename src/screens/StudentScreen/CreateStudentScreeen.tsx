@@ -36,7 +36,6 @@ const CreateStudentScreeen = ({ onClose }: ComponentChildProps) => {
     try {
       let imageUrl = import.meta.env.VITE_API_DEFAULT_IMAGE_URL
       const { upload, ...data } = values
-      console.log("🚀 ~ constonFinish:FormProps['onFinish']= ~ values:", values)
 
       if (upload && upload.length > 0) {
         if (upload[0].type !== 'image/jpeg' && upload[0].type !== 'image/png') {
@@ -98,7 +97,6 @@ const CreateStudentScreeen = ({ onClose }: ComponentChildProps) => {
           label="Ngày sinh"
           name="dateOfBirth"
           rules={[validationRules]}
-          initialValue={dayjs('2024-01-23').format('YYYY-MM-DD')}
           getValueProps={(value) => ({
             value: value ? dayjs(value, 'YYYY-MM-DD') : null,
           })}

@@ -34,6 +34,7 @@ export const useGetFacilitys = () => {
   return useQuery<ResponseGetListApi<Facility>, AxiosError>({
     queryKey: [GET_FACILITY_QUERY_KEY],
     queryFn: getFacilitys,
+    staleTime: 1000 * 60 * 5,
   })
 }
 

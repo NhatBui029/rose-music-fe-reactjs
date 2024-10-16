@@ -18,15 +18,18 @@ import { API_ENPOINTS } from '@api/api.constants'
 import apiInstance from '@api/apiInstance'
 import dayjs from 'dayjs'
 import { useGetFacilitys } from '@api/api-hooks/facility'
-import { useCreateStudent, useGetStudentDetail } from '@api/api-hooks/student'
+import { useEditStudent, useGetStudentDetail } from '@api/api-hooks/student'
 import { ComponentChildProps } from 'src/types/facility.type'
 import { useEffect } from 'react'
 
-const EditStudentScreeen = ({ onClose }: ComponentChildProps) => {
+const EditStudentScreeen = ({
+  onClose,
+  id,
+}: ComponentChildProps & { id: number }) => {
   const validationRules = useYupValidation(createStudentSchema)
   const { data: facilities } = useGetFacilitys()
-  const { mutateAsync: createStudent } = useCreateStudent()
-  const { data: student } = useGetStudentDetail(1)
+  const { mutateAsync: editStudent } = useEditStudent(id)
+  const { data: student } = useGetStudentDetail(id)
   const [form] = Form.useForm()
 
   useEffect(() => {
@@ -53,7 +56,6 @@ const EditStudentScreeen = ({ onClose }: ComponentChildProps) => {
     try {
       let imageUrl = import.meta.env.VITE_API_DEFAULT_IMAGE_URL
       const { upload, ...data } = values
-      console.log("🚀 ~ constonFinish:FormProps['onFinish']= ~ values:", values)
 
       if (upload && upload.length > 0) {
         if (upload[0].type !== 'image/jpeg' && upload[0].type !== 'image/png') {
@@ -74,17 +76,16 @@ const EditStudentScreeen = ({ onClose }: ComponentChildProps) => {
           await apiCloudinaryInstance.post(presignedUrl, formData)
 
         imageUrl = responseUploadImage.secure_url
-
-        await createStudent({
-          ...data,
-          imageUrl,
-        })
-
-        onClose()
-        message.success(`Đã thêm thành công học viên ${data.name}`)
       } else {
-        message.error('Chưa chọn ảnh')
+        imageUrl = student?.imageUrl
       }
+      await editStudent({
+        ...data,
+        imageUrl,
+      })
+
+      onClose()
+      message.success(`Đã sửa thông tin học viên ${data.name} thành công`)
     } catch (error) {
       message.error('Có lỗi xảy ra khi thêm học viên mới')
     }

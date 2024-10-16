@@ -21,7 +21,7 @@ import { useParams } from 'react-router-dom'
 import useYupValidation from '../../../hooks/useYupValidation'
 import { createRoomSchema } from '../room/room.schema'
 import { MdDelete } from 'react-icons/md'
-import { E2VstatusInstrument } from '../ultis'
+import { E2VstatusInstrument } from '../../../utils/facility.util'
 import { IoMdCloudUpload } from 'react-icons/io'
 
 const { TextArea } = Input

@@ -1,4 +1,4 @@
-import { StatusInstrumentEnum } from '../../types/facility.type'
+import { StatusInstrumentEnum } from '../types/facility.type'
 
 export const E2VstatusInstrument = (status: string) => {
   return StatusInstrumentEnum[

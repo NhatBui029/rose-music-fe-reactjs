@@ -13,6 +13,13 @@ export type Student = {
 }
 
 export enum SexEnum {
-  BOY = 'NAM',
-  GIRL = 'NỮ',
+  BOY = 'Nam',
+  GIRL = 'Nữ',
+}
+
+export type SearchParams = {
+  content?: string
+  searchBy?: string
+  page?: number
+  pageSize?: number
 }

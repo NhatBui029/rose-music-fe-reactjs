@@ -9,7 +9,7 @@ import {
   StatusInstrumentEnum,
 } from '../../../types/facility.type'
 import { useEffect } from 'react'
-import { E2VstatusInstrument } from '../ultis'
+import { E2VstatusInstrument } from '../../../utils/facility.util'
 const { Option } = Select
 
 type InstrumentCreateEditFormProps = CreateEditFormProps<
