@@ -1,9 +1,9 @@
-import { ResponseGetListApi } from './../../types/facility.type'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Facility, BodyFormData } from '../../types/facility.type'
+import { Facility } from '../../types/facility.type'
 import { API_ENPOINTS } from '../api.constants'
 import apiInstance from '../apiInstance'
 import { AxiosError } from 'axios'
+import { BodyFormData, ResponseGetListApi } from 'src/types/common.type'
 
 const GET_FACILITY_QUERY_KEY = 'GET_FACILITY'
 const GET_FACILITY_DETAIL_QUERY_KEY = 'GET_FACILITY_DETAIL'

@@ -1,18 +1,14 @@
 import { FormProps, message, Modal } from 'antd'
+
 import apiCloudinaryInstance from '@api/apiCloudinaryInstance'
 import { API_ENPOINTS } from '@api/api.constants'
 import apiInstance from '@api/apiInstance'
-import { useEditStudent, useGetStudentDetail } from '@api/api-hooks/student'
-import FormCreateEditStudent from './components/FormCreateEditStudent'
+import FormCreateEditTeacher from './components/FormCreateEditTeacher'
 import { ComponentChildProps } from 'src/types/common.type'
+import { useCreateTeacher } from '@api/api-hooks/teacher'
 
-const EditStudentScreeen = ({
-  onClose,
-  openModal,
-  id,
-}: ComponentChildProps & { id: number }) => {
-  const { mutateAsync: editStudent } = useEditStudent(id)
-  const { data: student } = useGetStudentDetail(id)
+const CreateTeacherScreeen = ({ onClose, openModal }: ComponentChildProps) => {
+  const { mutateAsync: createTeacher } = useCreateTeacher()
 
   const onFinish: FormProps['onFinish'] = async (values) => {
     try {
@@ -27,7 +23,7 @@ const EditStudentScreeen = ({
         const presignedUrl: string = await apiInstance.post(
           API_ENPOINTS.URL_UPLOAD,
           {
-            folder: 'student',
+            folder: 'teacher',
             eager: 'c_crop,h_200,w_260',
           },
         )
@@ -38,30 +34,31 @@ const EditStudentScreeen = ({
           await apiCloudinaryInstance.post(presignedUrl, formData)
 
         imageUrl = responseUploadImage.secure_url
-      } else {
-        imageUrl = student?.imageUrl
-      }
-      await editStudent({
-        ...data,
-        imageUrl,
-      })
 
-      onClose()
-      message.success(`Đã sửa thông tin học viên ${data.name} thành công`)
+        await createTeacher({
+          ...data,
+          imageUrl,
+        })
+
+        onClose()
+        message.success(`Đã thêm thành công giảng viên ${data.name}`)
+      } else {
+        message.error('Chưa chọn ảnh')
+      }
     } catch (error) {
-      message.error('Có lỗi xảy ra khi thêm học viên mới')
+      message.error('Có lỗi xảy ra khi thêm giảng viên mới')
     }
   }
   return (
     <Modal
-      title="Thay đổi thông tin học viên"
+      title="Thêm giảng viên mới"
       open={openModal}
       footer={false}
       onCancel={onClose}
     >
-      <FormCreateEditStudent onFinish={onFinish} data={student} />
+      <FormCreateEditTeacher onFinish={onFinish} />
     </Modal>
   )
 }
 
-export default EditStudentScreeen
+export default CreateTeacherScreeen

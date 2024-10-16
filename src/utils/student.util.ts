@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { SexEnum } from 'src/types/student.type'
+import { SexEnum } from 'src/types/common.type'
 
 export const E2Vsex = (status: string) => {
   return SexEnum[status as unknown as keyof typeof SexEnum]

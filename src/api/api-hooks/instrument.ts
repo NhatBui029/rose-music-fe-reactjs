@@ -1,13 +1,13 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import {
-  Instrument,
-  BodyFormData,
-  ResponseGetListApi,
-  ResponseGetDetail,
-} from '../../types/facility.type'
+import { Instrument } from '../../types/facility.type'
 import { API_ENPOINTS } from '../api.constants'
 import apiInstance from '../apiInstance'
 import { AxiosError } from 'axios'
+import {
+  BodyFormData,
+  ResponseGetDetail,
+  ResponseGetListApi,
+} from 'src/types/common.type'
 
 const GET_INSTRUMENT_QUERY_KEY = 'GET_INSTRUMENT'
 const GET_INSTRUMENT_DETAIL_QUERY_KEY = 'GET_INSTRUMENT_DETAIL'

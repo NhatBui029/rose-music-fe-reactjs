@@ -2,17 +2,17 @@ import { FormProps, message, Modal } from 'antd'
 import apiCloudinaryInstance from '@api/apiCloudinaryInstance'
 import { API_ENPOINTS } from '@api/api.constants'
 import apiInstance from '@api/apiInstance'
-import { useEditStudent, useGetStudentDetail } from '@api/api-hooks/student'
-import FormCreateEditStudent from './components/FormCreateEditStudent'
+import FormCreateEditTeacher from './components/FormCreateEditTeacher'
 import { ComponentChildProps } from 'src/types/common.type'
+import { useEditTeacher, useGetTeacherDetail } from '@api/api-hooks/teacher'
 
-const EditStudentScreeen = ({
+const EditTeacherScreeen = ({
   onClose,
   openModal,
   id,
 }: ComponentChildProps & { id: number }) => {
-  const { mutateAsync: editStudent } = useEditStudent(id)
-  const { data: student } = useGetStudentDetail(id)
+  const { mutateAsync: editTeacher } = useEditTeacher(id)
+  const { data: teacher } = useGetTeacherDetail(id)
 
   const onFinish: FormProps['onFinish'] = async (values) => {
     try {
@@ -27,7 +27,7 @@ const EditStudentScreeen = ({
         const presignedUrl: string = await apiInstance.post(
           API_ENPOINTS.URL_UPLOAD,
           {
-            folder: 'student',
+            folder: 'teacher',
             eager: 'c_crop,h_200,w_260',
           },
         )
@@ -39,17 +39,17 @@ const EditStudentScreeen = ({
 
         imageUrl = responseUploadImage.secure_url
       } else {
-        imageUrl = student?.imageUrl
+        imageUrl = teacher?.imageUrl
       }
-      await editStudent({
+      await editTeacher({
         ...data,
         imageUrl,
       })
 
       onClose()
-      message.success(`Đã sửa thông tin học viên ${data.name} thành công`)
+      message.success(`Đã sửa thông tin giảng viên ${data.name} thành công`)
     } catch (error) {
-      message.error('Có lỗi xảy ra khi thêm học viên mới')
+      message.error('Có lỗi xảy ra khi thêm giảng viên mới')
     }
   }
   return (
@@ -59,9 +59,9 @@ const EditStudentScreeen = ({
       footer={false}
       onCancel={onClose}
     >
-      <FormCreateEditStudent onFinish={onFinish} data={student} />
+      <FormCreateEditTeacher onFinish={onFinish} data={teacher} />
     </Modal>
   )
 }
 
-export default EditStudentScreeen
+export default EditTeacherScreeen

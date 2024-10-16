@@ -1,13 +1,14 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import {
-  ResponseGetListApi,
-  Room,
-  BodyFormData,
-  ResponseGetDetail,
-} from '../../types/facility.type'
+
 import { API_ENPOINTS } from '../api.constants'
 import apiInstance from '../apiInstance'
 import { AxiosError } from 'axios'
+import {
+  BodyFormData,
+  ResponseGetDetail,
+  ResponseGetListApi,
+} from 'src/types/common.type'
+import { Room } from 'src/types/facility.type'
 
 const GET_ROOM_QUERY_KEY = 'GET_ROOM'
 const GET_ROOM_DETAIL_QUERY_KEY = 'GET_ROOM_DETAIL'

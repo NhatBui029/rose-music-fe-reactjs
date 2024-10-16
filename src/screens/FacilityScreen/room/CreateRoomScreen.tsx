@@ -14,9 +14,7 @@ const CreateRoomScreen = () => {
 
   const [openDrawerCreateRoom, setOpenDrawerCreateRoom] = useState(true)
 
-  const { mutateAsync: createRoom, isPending = false } = useCreateRoom(
-    Number(facilityId),
-  )
+  const { mutateAsync: createRoom } = useCreateRoom(Number(facilityId))
 
   const onCloseCreateRoom = () => {
     setOpenDrawerCreateRoom(false)
@@ -69,13 +67,6 @@ const CreateRoomScreen = () => {
     }
   }
 
-  const normFile = (e: any) => {
-    if (Array.isArray(e)) {
-      return e
-    }
-    return e?.fileList
-  }
-
   return (
     <Drawer
       title="Tạo phòng học mới"
@@ -83,11 +74,7 @@ const CreateRoomScreen = () => {
       open={openDrawerCreateRoom}
       width={600}
     >
-      <FormCreateEditRoom
-        onFinish={onFinish}
-        normFile={normFile}
-        isPending={isPending}
-      />
+      <FormCreateEditRoom onFinish={onFinish} />
     </Drawer>
   )
 }

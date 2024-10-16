@@ -25,7 +25,7 @@ const EditRoomScreen = () => {
       }),
     )
   }
-  const { mutateAsync: editRoom, isPending = false } = useEditRoom(
+  const { mutateAsync: editRoom } = useEditRoom(
     Number(facilityId),
     Number(roomId),
   )
@@ -73,13 +73,6 @@ const EditRoomScreen = () => {
     }
   }
 
-  const normFile = (e: any) => {
-    if (Array.isArray(e)) {
-      return e
-    }
-    return e?.fileList
-  }
-
   return (
     <Drawer
       title={`Sửa phòng học ${room?.name}`}
@@ -87,12 +80,7 @@ const EditRoomScreen = () => {
       open={openDrawerCreateRoom}
       width={600}
     >
-      <FormCreateEditRoom
-        onFinish={onFinish}
-        normFile={normFile}
-        isPending={isPending}
-        data={room}
-      />
+      <FormCreateEditRoom onFinish={onFinish} data={room} />
     </Drawer>
   )
 }

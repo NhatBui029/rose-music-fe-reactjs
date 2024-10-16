@@ -1,15 +1,19 @@
 import { SexEnum } from './common.type'
 
-export type Student = {
+export type Teacher = {
   id: number
   name: string
   code: string
-  nickname?: string
-  address: string
   sex: SexEnum
   phoneNumber: string
-  email?: string
+  email: string
   dateOfBirth: string
   imageUrl: string
-  facilityId?: number
+  subjectId: number
+}
+
+export type Subject = {
+  id: number
+  name: string
+  color: string
 }

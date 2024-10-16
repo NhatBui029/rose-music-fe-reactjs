@@ -1,6 +1,14 @@
 import apiInstance from '../../api/apiInstance'
 import { API_ENPOINTS } from '../../api/api.constants'
-import { Button, Form, FormProps, Input, Upload, message } from 'antd'
+import {
+  Button,
+  ColorPicker,
+  Form,
+  FormProps,
+  Input,
+  Upload,
+  message,
+} from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import apiCloudinaryInstance from '../../api/apiCloudinaryInstance'
 import {
@@ -25,7 +33,7 @@ const CreateFacilityScreen = ({ onClose }: ComponentChildProps) => {
         },
       )
 
-      const { name, address, upload } = values
+      const { name, address, upload, color } = values
 
       if (upload && upload.length > 0) {
         if (upload[0].type !== 'image/jpeg' && upload[0].type !== 'image/png') {
@@ -41,6 +49,7 @@ const CreateFacilityScreen = ({ onClose }: ComponentChildProps) => {
         await createFacility({
           name,
           address,
+          color,
           imageUrl: responseUploadImage.secure_url,
         })
 
@@ -89,6 +98,15 @@ const CreateFacilityScreen = ({ onClose }: ComponentChildProps) => {
           ]}
         >
           <TextArea rows={3} />
+        </Form.Item>
+
+        <Form.Item
+          label="Màu chủ đạo"
+          name={'color'}
+          rules={[{ required: true, message: 'Vui lòng chọn màu chủ đạo' }]}
+          getValueFromEvent={(e) => e.toHexString()}
+        >
+          <ColorPicker />
         </Form.Item>
 
         <Form.Item<CreateEditFormItems<Facility>>

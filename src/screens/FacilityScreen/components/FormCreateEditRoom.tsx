@@ -27,12 +27,7 @@ import { IoMdCloudUpload } from 'react-icons/io'
 const { TextArea } = Input
 
 type RoomCreateEditFormProps = CreateEditFormProps<ResponseGetDetail<Room>>
-const FormCreateEditRoom = ({
-  onFinish,
-  normFile,
-  isPending,
-  data,
-}: RoomCreateEditFormProps) => {
+const FormCreateEditRoom = ({ onFinish, data }: RoomCreateEditFormProps) => {
   const { facilityId } = useParams()
   const { data: instrumentOptions } = useGetInstruments(Number(facilityId))
   const [form] = Form.useForm()
@@ -52,6 +47,13 @@ const FormCreateEditRoom = ({
       })
     }
   }, [data, form])
+
+  const normFile = (e: any) => {
+    if (Array.isArray(e)) {
+      return e
+    }
+    return e?.fileList
+  }
   return (
     <div>
       <Form
@@ -169,7 +171,7 @@ const FormCreateEditRoom = ({
         </Form.List>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit" loading={isPending}>
+          <Button type="primary" htmlType="submit">
             Lưu
           </Button>
         </Form.Item>

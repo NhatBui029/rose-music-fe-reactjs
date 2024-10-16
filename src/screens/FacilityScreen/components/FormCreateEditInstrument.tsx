@@ -17,8 +17,6 @@ type InstrumentCreateEditFormProps = CreateEditFormProps<
 >
 const FormCreateEditInstrument = ({
   onFinish,
-  normFile,
-  isPending,
   data,
 }: InstrumentCreateEditFormProps) => {
   const [form] = Form.useForm()
@@ -34,6 +32,13 @@ const FormCreateEditInstrument = ({
       })
     }
   }, [data, form])
+
+  const normFile = (e: any) => {
+    if (Array.isArray(e)) {
+      return e
+    }
+    return e?.fileList
+  }
   return (
     <div>
       <Form
@@ -136,7 +141,7 @@ const FormCreateEditInstrument = ({
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit" loading={isPending}>
+          <Button type="primary" htmlType="submit">
             Lưu
           </Button>
         </Form.Item>

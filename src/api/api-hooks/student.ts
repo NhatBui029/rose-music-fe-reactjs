@@ -2,8 +2,12 @@ import { API_ENPOINTS } from '@api/api.constants'
 import apiInstance from '@api/apiInstance'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
-import { BodyFormData, ResponseGetListApi } from 'src/types/facility.type'
-import { SearchParams, Student } from 'src/types/student.type'
+import {
+  BodyFormData,
+  ResponseGetListApi,
+  SearchParams,
+} from 'src/types/common.type'
+import { Student } from 'src/types/student.type'
 
 const GET_STUDENT_QUERY_KEY = 'GET_STUDENT'
 const GET_STUDENT_DETAIL_QUERY_KEY = 'GET_STUDENT_DETAIL'

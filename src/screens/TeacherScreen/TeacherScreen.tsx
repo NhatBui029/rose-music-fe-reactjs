@@ -15,19 +15,18 @@ import {
   Typography,
 } from 'antd'
 import { useRef, useState } from 'react'
-import CreateStudentScreeen from './CreateStudentScreeen'
-import { useGetStudents } from '@api/api-hooks/student'
-import { Student } from 'src/types/student.type'
-import { E2Vsex, convertDate } from 'src/utils/student.util'
-import { useGetFacilitys } from '@api/api-hooks/facility'
+import CreateTeacherScreeen from './CreateTeacherScreeen'
 import { FaSearch } from 'react-icons/fa'
 import ActionOnRow from './components/ActionOnRow'
-import EditStudentScreeen from './EditStudentScreeen'
+import EditTeacherScreeen from './EditTeacherScreeen'
 import { FilterDropdownProps } from 'antd/es/table/interface'
 import { ResponseGetDetail, SexEnum } from 'src/types/common.type'
-import { Facility } from 'src/types/facility.type'
+import { useGetSubjects } from '@api/api-hooks/subject'
+import { Subject, Teacher } from 'src/types/teacher.type'
+import { useGetTeachers } from '@api/api-hooks/teacher'
+import { convertDate, E2Vsex } from 'src/utils/student.util'
 
-const StudentScreen = () => {
+const TeacherScreen = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [searchText, setSearchText] = useState('')
@@ -35,10 +34,10 @@ const StudentScreen = () => {
 
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
-  const { data: facilities } = useGetFacilitys()
-  const [studentId, setStudentId] = useState<number>(1)
+  const { data: subjects } = useGetSubjects()
+  const [teacherId, setTeacherId] = useState<number>(1)
 
-  const { data: students, refetch } = useGetStudents({
+  const { data: teachers, refetch } = useGetTeachers({
     page: currentPage,
     pageSize,
   })
@@ -53,7 +52,7 @@ const StudentScreen = () => {
   }
 
   const showEditModal = (id: number) => {
-    setStudentId(id)
+    setTeacherId(id)
     setIsEditModalOpen(true)
   }
 
@@ -82,7 +81,7 @@ const StudentScreen = () => {
   }
 
   const getColumnSearchProps = (): TableColumnType<
-    ResponseGetDetail<Student>
+    ResponseGetDetail<Teacher>
   > => ({
     filterDropdown: ({
       setSelectedKeys,
@@ -153,14 +152,14 @@ const StudentScreen = () => {
     // />
   })
 
-  const columns: TableColumnsType<ResponseGetDetail<Student>> = [
+  const columns: TableColumnsType<ResponseGetDetail<Teacher>> = [
     {
       dataIndex: 'imageUrl',
       key: 'imageUrl',
       render: (text: string) => <Avatar src={text} />,
     },
     {
-      title: 'Mã học viên',
+      title: 'Mã giảng viên',
       dataIndex: 'code',
       key: 'code',
       sorter: {
@@ -179,16 +178,6 @@ const StudentScreen = () => {
       },
     },
     {
-      title: 'Ngày sinh',
-      key: 'dateOfBirth',
-      dataIndex: 'dateOfBirth',
-      sorter: {
-        compare: (first, second) =>
-          first.dateOfBirth.localeCompare(second.dateOfBirth),
-      },
-      render: (date: string) => convertDate(date),
-    },
-    {
       title: 'Giới tính',
       key: 'sex',
       dataIndex: 'sex',
@@ -200,34 +189,41 @@ const StudentScreen = () => {
       onFilter: (value, record) => record.sex === value,
     },
     {
+      title: 'Email',
+      key: 'email',
+      dataIndex: 'email',
+      sorter: {
+        compare: (first, second) => first.email.localeCompare(second.email),
+      },
+      render: (date: string) => convertDate(date),
+    },
+    {
       title: 'Số điện thoại',
       key: 'phoneNumber',
       dataIndex: 'phoneNumber',
     },
     {
-      title: 'Cơ sở',
-      key: 'facilityId',
-      dataIndex: 'facilityId',
-      render: (facilityId: number) => (
+      title: 'Bộ môn',
+      key: 'subjectId',
+      dataIndex: 'subjectId',
+      render: (subjectId: number) => (
         <Tag
           color={
-            facilities?.data.find(
-              (facility: Facility) => facility.id === facilityId,
-            )?.color
+            subjects?.data.find((subject: Subject) => subject.id === subjectId)
+              ?.color
           }
         >
           {
-            facilities?.data.find(
-              (facility: Facility) => facility.id === facilityId,
-            )?.name
+            subjects?.data.find((subject: Subject) => subject.id === subjectId)
+              ?.name
           }
         </Tag>
       ),
-      filters: facilities?.data.map((facility: Facility) => ({
-        text: facility.name,
-        value: facility.id,
+      filters: subjects?.data.map((subject: Subject) => ({
+        text: subject.name,
+        value: subject.id,
       })),
-      onFilter: (value, record) => record.facilityId === value,
+      onFilter: (value, record) => record.subjectId === value,
     },
     {
       title: '...',
@@ -247,7 +243,7 @@ const StudentScreen = () => {
   return (
     <div>
       <Flex justify="space-between">
-        <Typography.Title level={3}>Quản lí học viên</Typography.Title>
+        <Typography.Title level={3}>Quản lí giảng viên</Typography.Title>
         <Button type="primary" onClick={showCreateModal}>
           Thêm
         </Button>
@@ -256,12 +252,12 @@ const StudentScreen = () => {
         <Col span={24}>
           <Table
             columns={columns}
-            dataSource={students?.data}
+            dataSource={teachers?.data}
             rowKey={(record) => record.id}
             pagination={{
               current: currentPage,
               pageSize,
-              total: students?.meta?.total,
+              total: teachers?.meta?.total,
               position: ['topRight'],
             }}
             onChange={handleTableChange}
@@ -272,17 +268,17 @@ const StudentScreen = () => {
         </Col> */}
       </Row>
 
-      <CreateStudentScreeen
+      <CreateTeacherScreeen
         onClose={onCreateCloseModal}
         openModal={isCreateModalOpen}
       />
-      <EditStudentScreeen
+      <EditTeacherScreeen
         onClose={onEditCloseModal}
-        id={studentId}
+        id={teacherId}
         openModal={isEditModalOpen}
       />
     </div>
   )
 }
 
-export default StudentScreen
+export default TeacherScreen
