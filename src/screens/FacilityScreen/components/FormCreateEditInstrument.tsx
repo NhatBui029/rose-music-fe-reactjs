@@ -1,15 +1,17 @@
 import { Button, Form, Input, InputNumber, Select, Upload } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import {
-  CreateEditFormItems,
-  CreateEditFormProps,
   Instrument,
   MusicalInstrumentEnum,
-  ResponseGetDetail,
   StatusInstrumentEnum,
 } from '../../../types/facility.type'
 import { useEffect } from 'react'
 import { E2VstatusInstrument } from '../../../utils/facility.util'
+import {
+  CreateEditFormItems,
+  CreateEditFormProps,
+  ResponseGetDetail,
+} from 'src/types/common.type'
 const { Option } = Select
 
 type InstrumentCreateEditFormProps = CreateEditFormProps<

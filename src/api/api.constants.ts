@@ -19,4 +19,6 @@ export const API_ENPOINTS = {
   TEACHER: '/teacher',
   TEACHER_DETAIL: (teacherId: number) => `/teacher/${teacherId}`,
   SUBJECT: '/subject',
+  COURSE: '/course',
+  COURSE_DETAIL: (courseId: number) => `/course/${courseId}`,
 }

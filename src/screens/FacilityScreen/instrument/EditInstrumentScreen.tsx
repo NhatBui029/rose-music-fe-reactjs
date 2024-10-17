@@ -97,12 +97,7 @@ const EditInstrumentScreen = () => {
       open={openDrawerCreateInstrument}
       width={500}
     >
-      <FormCreateEditInstrument
-        onFinish={onFinish}
-        normFile={normFile}
-        isPending={isPending}
-        data={instrument}
-      />
+      <FormCreateEditInstrument onFinish={onFinish} data={instrument} />
     </Drawer>
   )
 }

@@ -8,7 +8,7 @@ import {
   ResponseGetListApi,
   SearchParams,
 } from 'src/types/common.type'
-import { Subject, Teacher } from 'src/types/teacher.type'
+import { Teacher } from 'src/types/teacher.type'
 
 const GET_TEACHER_QUERY_KEY = 'GET_TEACHER'
 const GET_TEACHER_DETAIL_QUERY_KEY = 'GET_TEACHER_DETAIL'

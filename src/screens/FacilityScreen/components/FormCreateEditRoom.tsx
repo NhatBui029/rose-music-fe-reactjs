@@ -9,12 +9,7 @@ import {
   Typography,
   Upload,
 } from 'antd'
-import {
-  CreateEditFormItems,
-  CreateEditFormProps,
-  ResponseGetDetail,
-  Room,
-} from '../../../types/facility.type'
+import { Room } from '../../../types/facility.type'
 import { useEffect } from 'react'
 import { useGetInstruments } from '../../../api/api-hooks/instrument'
 import { useParams } from 'react-router-dom'
@@ -23,6 +18,11 @@ import { createRoomSchema } from '../room/room.schema'
 import { MdDelete } from 'react-icons/md'
 import { E2VstatusInstrument } from '../../../utils/facility.util'
 import { IoMdCloudUpload } from 'react-icons/io'
+import {
+  CreateEditFormItems,
+  CreateEditFormProps,
+  ResponseGetDetail,
+} from 'src/types/common.type'
 
 const { TextArea } = Input
 

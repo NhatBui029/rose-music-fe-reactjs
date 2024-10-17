@@ -16,5 +16,6 @@ export const useGetSubjects = () => {
   return useQuery<ResponseGetListApi<Subject>, AxiosError>({
     queryKey: [GET_SUBJECT_QUERY_KEY],
     queryFn: () => getSubjects(),
+    staleTime: 5 * 60 * 1000,
   })
 }
