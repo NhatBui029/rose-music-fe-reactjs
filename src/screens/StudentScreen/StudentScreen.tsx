@@ -179,6 +179,12 @@ const StudentScreen = () => {
       },
     },
     {
+      title: 'Biệt danh',
+      key: 'nickname',
+      dataIndex: 'nickname',
+      render: (nickname: string) => nickname || '-',
+    },
+    {
       title: 'Ngày sinh',
       key: 'dateOfBirth',
       dataIndex: 'dateOfBirth',

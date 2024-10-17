@@ -195,7 +195,6 @@ const TeacherScreen = () => {
       sorter: {
         compare: (first, second) => first.email.localeCompare(second.email),
       },
-      render: (date: string) => convertDate(date),
     },
     {
       title: 'Số điện thoại',
