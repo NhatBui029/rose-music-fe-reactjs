@@ -1,62 +1,31 @@
 import { FormProps, message, Modal } from 'antd'
-
-import apiCloudinaryInstance from '@api/apiCloudinaryInstance'
-import { API_ENPOINTS } from '@api/api.constants'
-import apiInstance from '@api/apiInstance'
-import FormCreateEditTeacher from './components/FormCreateEditTeacher'
+import FormCreateEditCourse from './components/FormCreateEditCourse'
 import { ComponentChildProps } from 'src/types/common.type'
-import { useCreateTeacher } from '@api/api-hooks/teacher'
+import { useCreateCourse } from '@api/api-hooks/course'
 
 const CreateCourseScreeen = ({ onClose, openModal }: ComponentChildProps) => {
-  const { mutateAsync: createTeacher } = useCreateTeacher()
+  const { mutateAsync: createCourse } = useCreateCourse()
 
   const onFinish: FormProps['onFinish'] = async (values) => {
     try {
-      let imageUrl = import.meta.env.VITE_API_DEFAULT_IMAGE_URL
-      const { upload, ...data } = values
+      await createCourse({
+        ...values,
+      })
 
-      if (upload && upload.length > 0) {
-        if (upload[0].type !== 'image/jpeg' && upload[0].type !== 'image/png') {
-          message.warning('Vui lòng chọn file ảnh')
-          return
-        }
-        const presignedUrl: string = await apiInstance.post(
-          API_ENPOINTS.URL_UPLOAD,
-          {
-            folder: 'teacher',
-            eager: 'c_crop,h_200,w_260',
-          },
-        )
-        const formData = new FormData()
-        formData.append('file', upload[0].originFileObj)
-
-        const responseUploadImage: Record<string, string> =
-          await apiCloudinaryInstance.post(presignedUrl, formData)
-
-        imageUrl = responseUploadImage.secure_url
-
-        await createTeacher({
-          ...data,
-          imageUrl,
-        })
-
-        onClose()
-        message.success(`Đã thêm thành công giảng viên ${data.name}`)
-      } else {
-        message.error('Chưa chọn ảnh')
-      }
+      onClose()
+      message.success(`Đã thêm thành công khóa học ${values.name}`)
     } catch (error) {
-      message.error('Có lỗi xảy ra khi thêm giảng viên mới')
+      message.error('Có lỗi xảy ra khi thêm khóa học mới')
     }
   }
   return (
     <Modal
-      title="Thêm giảng viên mới"
+      title="Thêm khóa học mới"
       open={openModal}
       footer={false}
       onCancel={onClose}
     >
-      <FormCreateEditTeacher onFinish={onFinish} />
+      <FormCreateEditCourse onFinish={onFinish} />
     </Modal>
   )
 }

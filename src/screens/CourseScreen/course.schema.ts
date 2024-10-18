@@ -12,7 +12,7 @@ const createCourseSchema = yup.object().shape({
   description: yup.string(),
   level: yup
     .mixed()
-    .oneOf(Object.values(StudentLevelEnum))
+    .oneOf(Object.keys(StudentLevelEnum))
     .required('Level là bắt buộc'),
 })
 

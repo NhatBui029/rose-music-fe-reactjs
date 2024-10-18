@@ -21,11 +21,11 @@ import { Student } from 'src/types/student.type'
 import { E2Vsex, convertDate } from 'src/utils/student.util'
 import { useGetFacilitys } from '@api/api-hooks/facility'
 import { FaSearch } from 'react-icons/fa'
-import ActionOnRow from './components/ActionOnRow'
 import EditStudentScreeen from './EditStudentScreeen'
 import { FilterDropdownProps } from 'antd/es/table/interface'
 import { ResponseGetDetail, SexEnum } from 'src/types/common.type'
 import { Facility } from 'src/types/facility.type'
+import ActionOnRow from '@components/ActionOnRow/ActionOnRow'
 
 const StudentScreen = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)

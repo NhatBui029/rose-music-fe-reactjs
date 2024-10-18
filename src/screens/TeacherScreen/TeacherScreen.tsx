@@ -17,7 +17,6 @@ import {
 import { useRef, useState } from 'react'
 import CreateTeacherScreeen from './CreateTeacherScreeen'
 import { FaSearch } from 'react-icons/fa'
-import ActionOnRow from './components/ActionOnRow'
 import EditTeacherScreeen from './EditTeacherScreeen'
 import { FilterDropdownProps } from 'antd/es/table/interface'
 import { ResponseGetDetail, SexEnum } from 'src/types/common.type'
@@ -25,6 +24,7 @@ import { useGetSubjects } from '@api/api-hooks/subject'
 import { Subject, Teacher } from 'src/types/teacher.type'
 import { useGetTeachers } from '@api/api-hooks/teacher'
 import { convertDate, E2Vsex } from 'src/utils/student.util'
+import ActionOnRow from '@components/ActionOnRow/ActionOnRow'
 
 const TeacherScreen = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)

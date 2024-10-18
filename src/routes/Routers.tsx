@@ -14,6 +14,7 @@ import EditRoomScreen from '../screens/FacilityScreen/room/EditRoomScreen'
 import EditInstrumentScreen from '../screens/FacilityScreen/instrument/EditInstrumentScreen'
 import StudentScreen from '../screens/StudentScreen/StudentScreen'
 import TeacherScreen from '@screens/TeacherScreen/TeacherScreen'
+import CourseScreen from '@screens/CourseScreen/CourseScreen'
 
 const Routers = () => {
   const router = createBrowserRouter([
@@ -50,6 +51,14 @@ const Routers = () => {
           element: (
             <ProtectedRoute>
               <TeacherScreen />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: ROUTE_PATHS.COURSE,
+          element: (
+            <ProtectedRoute>
+              <CourseScreen />
             </ProtectedRoute>
           ),
         },

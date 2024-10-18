@@ -1,46 +1,36 @@
 import {
-  Avatar,
   Button,
   Col,
   Flex,
-  Input,
-  InputRef,
   Popover,
   Row,
-  Space,
   Table,
-  TableColumnType,
   TableColumnsType,
   Tag,
   Typography,
 } from 'antd'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import CreateCourseScreeen from './CreateCourseScreeen'
-import { FaSearch } from 'react-icons/fa'
-import ActionOnRow from './components/ActionOnRow'
 import EditCourseScreeen from './EditCourseScreeen'
-import { FilterDropdownProps } from 'antd/es/table/interface'
-import { ResponseGetDetail, SexEnum } from 'src/types/common.type'
+import { ResponseGetDetail } from 'src/types/common.type'
 import { useGetSubjects } from '@api/api-hooks/subject'
-import { Subject, Teacher } from 'src/types/teacher.type'
-import { useGetTeachers } from '@api/api-hooks/teacher'
-import { convertDate, E2Vsex } from 'src/utils/student.util'
+import { Subject } from 'src/types/teacher.type'
+import { useGetCourses } from '@api/api-hooks/course'
+import { Course, StudentLevelEnum } from 'src/types/course.type'
+import { E2Vlevel } from 'src/utils/course.util'
+import { Facility } from 'src/types/facility.type'
+import { useGetFacilitys } from '@api/api-hooks/facility'
+import ActionOnRow from '@components/ActionOnRow/ActionOnRow'
 
 const CourseScreen = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const [searchText, setSearchText] = useState('')
-  const searchInput = useRef<InputRef>(null)
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize, setPageSize] = useState(10)
   const { data: subjects } = useGetSubjects()
-  const [teacherId, setTeacherId] = useState<number>(1)
+  const { data: facilities } = useGetFacilitys()
+  const [courseId, setCourseId] = useState<number>(1)
 
-  const { data: teachers, refetch } = useGetTeachers({
-    page: currentPage,
-    pageSize,
-  })
+  const { data: courses, refetch } = useGetCourses()
 
   const showCreateModal = () => {
     setIsCreateModalOpen(true)
@@ -52,7 +42,7 @@ const CourseScreen = () => {
   }
 
   const showEditModal = (id: number) => {
-    setTeacherId(id)
+    setCourseId(id)
     setIsEditModalOpen(true)
   }
 
@@ -61,145 +51,55 @@ const CourseScreen = () => {
     refetch()
   }
 
-  const handleTableChange = (pagination: any) => {
-    setCurrentPage(pagination.current)
-    setPageSize(pagination.pageSize)
-    refetch()
-  }
-
-  const handleSearch = (
-    selectedKeys: string[],
-    confirm: FilterDropdownProps['confirm'],
-  ) => {
-    confirm()
-    setSearchText(selectedKeys[0])
-  }
-
-  const handleReset = (clearFilters: () => void) => {
-    clearFilters()
-    setSearchText('')
-  }
-
-  const getColumnSearchProps = (): TableColumnType<
-    ResponseGetDetail<Teacher>
-  > => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-      close,
-    }) => (
-      <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
-        <Input
-          ref={searchInput}
-          placeholder={`Tìm kiếm`}
-          value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() => handleSearch(selectedKeys as string[], confirm)}
-          style={{ marginBottom: 8, display: 'block' }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => handleSearch(selectedKeys as string[], confirm)}
-            icon={<FaSearch />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Tìm kiếm
-          </Button>
-          <Button
-            onClick={() => clearFilters && handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              close()
-            }}
-          >
-            Đóng
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: (filtered: boolean) => (
-      <FaSearch style={{ color: filtered ? '#1677ff' : undefined }} />
-    ),
-    onFilter: (value, record) =>
-      record.name
-        .toString()
-        .toLowerCase()
-        .includes((value as string).toLowerCase()),
-    onFilterDropdownOpenChange: (visible) => {
-      if (visible) {
-        setTimeout(() => searchInput.current?.select(), 100)
-      }
-    },
-    render: (text) => text,
-    // <Highlighter
-    //   highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-    //   searchWords={[searchText]}
-    //   autoEscape
-    //   textToHighlight={text ? text.toString() : ''}
-    // />
-  })
-
-  const columns: TableColumnsType<ResponseGetDetail<Teacher>> = [
+  const columns: TableColumnsType<ResponseGetDetail<Course>> = [
     {
-      dataIndex: 'imageUrl',
-      key: 'imageUrl',
-      render: (text: string) => <Avatar src={text} />,
-    },
-    {
-      title: 'Mã giảng viên',
-      dataIndex: 'code',
-      key: 'code',
-      sorter: {
-        compare: (first, second) => first.code.localeCompare(second.code),
-        multiple: 3,
-      },
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
     },
     {
       title: 'Tên',
       key: 'name',
       dataIndex: 'name',
-      ...getColumnSearchProps(),
       sorter: {
         compare: (first, second) => first.name.localeCompare(second.name),
         multiple: 3,
       },
     },
     {
-      title: 'Giới tính',
-      key: 'sex',
-      dataIndex: 'sex',
-      render: (sex: string) => E2Vsex(sex),
-      filters: Object.keys(SexEnum).map((sex) => ({
-        text: E2Vsex(sex),
-        value: sex,
+      title: 'Trình độ',
+      key: 'level',
+      dataIndex: 'level',
+      render: (level: string) => E2Vlevel(level),
+      filters: Object.keys(StudentLevelEnum).map((level) => ({
+        text: E2Vlevel(level),
+        value: level,
       })),
-      onFilter: (value, record) => record.sex === value,
+      onFilter: (value, record) => record.level === value,
     },
     {
-      title: 'Email',
-      key: 'email',
-      dataIndex: 'email',
+      title: 'Giá tiền',
+      key: 'price',
+      dataIndex: 'price',
       sorter: {
-        compare: (first, second) => first.email.localeCompare(second.email),
+        compare: (first, second) => first.price - second.price,
       },
     },
     {
-      title: 'Số điện thoại',
-      key: 'phoneNumber',
-      dataIndex: 'phoneNumber',
+      title: 'Số buổi học',
+      key: 'numberOfLesson',
+      dataIndex: 'numberOfLesson',
+    },
+    {
+      title: 'Số buổi nghỉ phép',
+      key: 'numberOfLessonExcused',
+      dataIndex: 'numberOfLessonExcused',
+    },
+    {
+      title: 'Thời lượng buổi học',
+      key: 'duration',
+      dataIndex: 'duration',
+      render: (duration: string) => `${duration} phút`,
     },
     {
       title: 'Bộ môn',
@@ -225,6 +125,31 @@ const CourseScreen = () => {
       onFilter: (value, record) => record.subjectId === value,
     },
     {
+      title: 'Cơ sở',
+      key: 'facilityId',
+      dataIndex: 'facilityId',
+      render: (facilityId: number) => (
+        <Tag
+          color={
+            facilities?.data.find(
+              (facility: Facility) => facility.id === facilityId,
+            )?.color
+          }
+        >
+          {
+            facilities?.data.find(
+              (facility: Facility) => facility.id === facilityId,
+            )?.name
+          }
+        </Tag>
+      ),
+      filters: facilities?.data.map((facility: Facility) => ({
+        text: facility.name,
+        value: facility.id,
+      })),
+      onFilter: (value, record) => record.facilityId === value,
+    },
+    {
       title: '...',
       key: 'id',
       dataIndex: 'id',
@@ -242,7 +167,9 @@ const CourseScreen = () => {
   return (
     <div>
       <Flex justify="space-between">
-        <Typography.Title level={3}>Quản lí giảng viên</Typography.Title>
+        <Typography.Title level={3}>
+          Quản lí thông tin khóa học
+        </Typography.Title>
         <Button type="primary" onClick={showCreateModal}>
           Thêm
         </Button>
@@ -251,15 +178,9 @@ const CourseScreen = () => {
         <Col span={24}>
           <Table
             columns={columns}
-            dataSource={teachers?.data}
+            dataSource={courses?.data}
             rowKey={(record) => record.id}
-            pagination={{
-              current: currentPage,
-              pageSize,
-              total: teachers?.meta?.total,
-              position: ['topRight'],
-            }}
-            onChange={handleTableChange}
+            pagination={false}
           />
         </Col>
         {/* <Col span={6}>
@@ -273,7 +194,7 @@ const CourseScreen = () => {
       />
       <EditCourseScreeen
         onClose={onEditCloseModal}
-        id={teacherId}
+        id={courseId}
         openModal={isEditModalOpen}
       />
     </div>

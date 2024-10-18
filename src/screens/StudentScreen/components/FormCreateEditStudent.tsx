@@ -5,8 +5,8 @@ import dayjs from 'dayjs'
 import { useGetFacilitys } from '@api/api-hooks/facility'
 import { IoMdCloudUpload } from 'react-icons/io'
 import { useEffect } from 'react'
-import { CreateEditFormProps, ResponseGetDetail } from 'src/types/facility.type'
 import { Student } from 'src/types/student.type'
+import { CreateEditFormProps, ResponseGetDetail } from 'src/types/common.type'
 
 type StudentCreateEditFormProps = CreateEditFormProps<
   ResponseGetDetail<Student>
