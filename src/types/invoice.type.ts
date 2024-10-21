@@ -1,3 +1,5 @@
+import { PaginationParams } from './common.type'
+
 export type Invoice = {
   id: number
   code: string
@@ -14,6 +16,8 @@ export type Voucher = {
   description?: string
   discount: number
   discountUnit: DiscountUnitEnum
+  facilityId: number
+  isAvailable: boolean
 }
 
 export type VoucherStudentCourse = {
@@ -61,4 +65,9 @@ export enum PaymentStatusEnum {
 export enum PaymentTypeEnum {
   TRANFER = 'Chuyển đi',
   RECEIVE = 'Nhận về',
+}
+
+export type VoucherSearchParams = PaginationParams & {
+  facilityId?: number
+  isAvailable?: boolean
 }

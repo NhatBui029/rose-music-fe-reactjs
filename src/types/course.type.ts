@@ -24,6 +24,7 @@ export type StudentCourse = {
 }
 
 export enum StudentCourseStatusEnum {
+  PENDING = 'Đang chờ',
   ACTIVE = 'Đang học',
   COMPLETED = 'Hoàn thành',
   DEFERRED = 'Bảo lưu',

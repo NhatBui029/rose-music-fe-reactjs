@@ -1,46 +1,57 @@
 import useYupValidation from '@hooks/useYupValidation'
-import { Button, Form, Select } from 'antd'
-import createCourseSchema from '../InfoCourseScreen/course.schema'
-import { useEffect, useState } from 'react'
-import { CreateEditFormProps, ResponseGetDetail } from 'src/types/common.type'
-import { useGetSubjects } from '@api/api-hooks/subject'
-import { StudentCourse } from 'src/types/course.type'
-import { useGetFacilitys } from '@api/api-hooks/facility'
+import {
+  Button,
+  Form,
+  FormInstance,
+  FormProps,
+  InputNumber,
+  Select,
+  message,
+} from 'antd'
+import { useState } from 'react'
 import './style.css'
-import { DebounceSelect, UserValue } from './SearchSelect'
-type StudentCourseCreateEditFormProps = CreateEditFormProps<
-  ResponseGetDetail<StudentCourse>
->
+import { DebounceSelect, SearchValue } from './SearchSelect'
+import { useGetCourses } from '@api/api-hooks/course'
+import { useGetVouchers } from '@api/api-hooks/voucher'
+import { E2VvoucherDiscountUnit } from 'src/utils/course.util'
+import createRegisterCourseSchema from '../ParticipateCourseScreen/register-course.schema'
+import useRegisterCourseStore, {
+  RegisterCourseData,
+} from '@stores/register-course.store'
+
+type StudentCourseCreateFormProps = {
+  form: FormInstance
+}
 
 const FormCreateEditStudentCourse = ({
-  onFinish,
-  data,
-}: StudentCourseCreateEditFormProps) => {
-  const validationRules = useYupValidation(createCourseSchema)
-  const { data: subjects } = useGetSubjects()
-  const { data: facilities } = useGetFacilitys()
-  const [form] = Form.useForm()
-  const [student, setStudent] = useState<UserValue>()
+  form,
+}: StudentCourseCreateFormProps) => {
+  const validationRules = useYupValidation(createRegisterCourseSchema)
+  const { setRegisterCourseData } = useRegisterCourseStore()
+  const [student, setStudent] = useState<SearchValue>()
+  const { data: courses } = useGetCourses(
+    {
+      facilityId: student?.value,
+    },
+    !!student,
+  )
+  const { data: vouchers } = useGetVouchers(
+    {
+      facilityId: student?.value,
+      isAvailable: true,
+    },
+    !!student,
+  )
 
-  // useEffect(() => {
-  //   if (data) {
-  //     form.setFieldsValue({
-  //       name: data.name,
-  //       duration: data.duration,
-  //       numberOfLesson: data.numberOfLesson,
-  //       numberOfLessonExcused: data.numberOfLessonExcused,
-  //       price: data.price,
-  //       description: data.description,
-  //       level: data.level,
-  //       subjectId: data.subjectId,
-  //       facilityId: data.facilityId,
-  //     })
-  //   }
-  // }, [data, form])
-
-  useEffect(() => {
-    console.log(form.getFieldValue('studentId'))
-  }, [form.getFieldValue('studentId')])
+  const onFinish: FormProps['onFinish'] = async (values) => {
+    try {
+      console.log("🚀 ~ constonFinish:FormProps['onFinish']= ~ values:", values)
+      setRegisterCourseData(values as RegisterCourseData)
+      message.success(`Đã thêm thành công khóa học ${values.name}`)
+    } catch (error) {
+      message.error('Có lỗi xảy ra khi thêm khóa học mới')
+    }
+  }
 
   return (
     <Form
@@ -50,8 +61,9 @@ const FormCreateEditStudentCourse = ({
       layout="horizontal"
       onFinish={onFinish}
     >
-      <Form.Item label="Học viên" name="studentId">
+      <Form.Item label="Học viên" name="students" rules={[validationRules]}>
         <DebounceSelect
+          mode="multiple"
           value={student}
           placeholder="Tìm kiếm"
           onChange={(newTudent) => {
@@ -61,20 +73,30 @@ const FormCreateEditStudentCourse = ({
         />
       </Form.Item>
 
-      <Form.Item label="Khoá học" name="courseId">
-        <Select placeholder="Chọn khoá học">
-          {facilities?.data.map((facility) => (
-            <Select.Option value={facility.id} key={facility.id}>
-              {facility.name}
-            </Select.Option>
-          ))}
+      <Form.Item label="Khoá học" name="courses" rules={[validationRules]}>
+        <Select placeholder="Chọn khoá học" mode="multiple">
+          {courses &&
+            courses.data.map((course) => (
+              <Select.Option value={course.id} key={course.id}>
+                {course.name}
+              </Select.Option>
+            ))}
         </Select>
       </Form.Item>
 
-      <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-          Lưu
-        </Button>
+      <Form.Item label="Số lượng" name="quantity" rules={[validationRules]}>
+        <InputNumber addonAfter="Khóa" min={1} />
+      </Form.Item>
+
+      <Form.Item label="Ưu đãi" name="voucherId" rules={[validationRules]}>
+        <Select placeholder="Chọn khoá học">
+          {vouchers &&
+            vouchers.data.map((voucher) => (
+              <Select.Option value={voucher.id} key={voucher.id}>
+                {`${voucher.name} (${voucher.discount}${E2VvoucherDiscountUnit(voucher.discountUnit)})`}
+              </Select.Option>
+            ))}
+        </Select>
       </Form.Item>
     </Form>
   )

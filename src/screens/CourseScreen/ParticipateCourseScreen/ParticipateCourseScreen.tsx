@@ -10,7 +10,7 @@ import {
   Typography,
 } from 'antd'
 import { useState } from 'react'
-import CreateStudentCourseScreen from './CreateStudentCourseScreen'
+import RegisterCourseScreen from './RegisterCourseScreen'
 import EditCourseScreeen from './EditCourseScreeen'
 import { ResponseGetDetail } from 'src/types/common.type'
 import { useGetSubjects } from '@api/api-hooks/subject'
@@ -22,7 +22,7 @@ import { Facility } from 'src/types/facility.type'
 import { useGetFacilitys } from '@api/api-hooks/facility'
 import ActionOnRow from '@components/ActionOnRow/ActionOnRow'
 
-const StudentCourseScreen = () => {
+const ParticipateCourseScreen = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
 
@@ -188,7 +188,7 @@ const StudentCourseScreen = () => {
         </Col> */}
       </Row>
 
-      <CreateStudentCourseScreen
+      <RegisterCourseScreen
         onClose={onCreateCloseModal}
         openModal={isCreateModalOpen}
       />
@@ -201,4 +201,4 @@ const StudentCourseScreen = () => {
   )
 }
 
-export default StudentCourseScreen
+export default ParticipateCourseScreen

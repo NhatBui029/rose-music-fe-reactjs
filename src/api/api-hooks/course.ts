@@ -18,7 +18,7 @@ const createCourse = (data: CourseForm) => {
   return apiInstance.post<CourseForm, void>(API_ENPOINTS.COURSE, data)
 }
 
-const getCourses = (searchParams: CourseSearchParams) => {
+const getCourses = (searchParams?: CourseSearchParams) => {
   return apiInstance.get<void, ResponseGetListApi<Course>>(
     API_ENPOINTS.COURSE,
     {
@@ -49,7 +49,7 @@ export const useCreateCourse = () => {
 }
 
 export const useGetCourses = (
-  searchParams: CourseSearchParams,
+  searchParams?: CourseSearchParams,
   enabled: boolean = true,
 ) => {
   return useQuery<ResponseGetListApi<Course>, AxiosError>({

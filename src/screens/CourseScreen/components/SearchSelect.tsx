@@ -8,7 +8,7 @@ export interface DebounceSelectProps<ValueType>
   debounceTimeout?: number
 }
 
-export interface UserValue {
+export interface SearchValue {
   label: string
   value: number
 }
@@ -55,7 +55,13 @@ export function DebounceSelect<
       onSearch={debouncedSearch}
       notFoundContent={isLoading ? <Spin size="small" /> : null}
       {...props}
-      options={options}
-    />
+    >
+      {options &&
+        options.map((option) => (
+          <Select.Option value={option.value} key={option.value}>
+            {option.label}
+          </Select.Option>
+        ))}
+    </Select>
   )
 }

@@ -88,13 +88,13 @@ const AppLayout = () => {
               icon: <IoInformationCircle />,
             },
             {
-              key: ROUTE_PATHS.STUDENT_COURSE,
-              label: <Link to={ROUTE_PATHS.STUDENT_COURSE}>Đăng kí</Link>,
+              key: ROUTE_PATHS.PARTICIPATE_COURSE,
+              label: <Link to={ROUTE_PATHS.PARTICIPATE_COURSE}>Đăng kí</Link>,
               icon: <FaRegistered />,
             },
             {
-              key: ROUTE_PATHS.DEFER,
-              label: <Link to={ROUTE_PATHS.DEFER}>Bảo lưu</Link>,
+              key: ROUTE_PATHS.VOUCHER_COURSE,
+              label: <Link to={ROUTE_PATHS.VOUCHER_COURSE}>Khuyến mãi</Link>,
               icon: <MdOutlinePauseCircleFilled />,
             },
           ],

@@ -15,7 +15,7 @@ import EditInstrumentScreen from '../screens/FacilityScreen/instrument/EditInstr
 import StudentScreen from '../screens/StudentScreen/StudentScreen'
 import TeacherScreen from '@screens/TeacherScreen/TeacherScreen'
 import CourseScreen from '@screens/CourseScreen/InfoCourseScreen/CourseScreen'
-import StudentCourseScreen from '@screens/CourseScreen/StudentCourseScreen/StudentCourseScreen'
+import ParticipateCourseScreen from '../screens/CourseScreen/ParticipateCourseScreen/ParticipateCourseScreen'
 
 const Routers = () => {
   const router = createBrowserRouter([
@@ -64,10 +64,10 @@ const Routers = () => {
           ),
         },
         {
-          path: ROUTE_PATHS.STUDENT_COURSE,
+          path: ROUTE_PATHS.PARTICIPATE_COURSE,
           element: (
             <ProtectedRoute>
-              <StudentCourseScreen />
+              <ParticipateCourseScreen />
             </ProtectedRoute>
           ),
         },
