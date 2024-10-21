@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { devtools, persist } from 'zustand/middleware'
+import { devtools } from 'zustand/middleware'
 
 export type RegisterCourseData = {
   students: number[]
@@ -14,19 +14,11 @@ type RegisterCourseState = {
 }
 
 const useRegisterCourseStore = create<RegisterCourseState>()(
-  devtools(
-    persist(
-      (set) => ({
-        data: null,
-        setRegisterCourseData: (data: RegisterCourseData) =>
-          set({ data }, false, 'setRegisterCourseData'),
-      }),
-      {
-        name: 'register-course-store',
-        partialize: (state) => state.data,
-      },
-    ),
-  ),
+  devtools((set) => ({
+    data: null,
+    setRegisterCourseData: (data: RegisterCourseData) =>
+      set({ data }, false, 'setRegisterCourseData'),
+  })),
 )
 
 export default useRegisterCourseStore

@@ -19,13 +19,11 @@ import useRegisterCourseStore, {
   RegisterCourseData,
 } from '@stores/register-course.store'
 
-type StudentCourseCreateFormProps = {
+type RegisterCourseFormProps = {
   form: FormInstance
 }
 
-const FormCreateEditStudentCourse = ({
-  form,
-}: StudentCourseCreateFormProps) => {
+const FormRegisterCourse = ({ form }: RegisterCourseFormProps) => {
   const validationRules = useYupValidation(createRegisterCourseSchema)
   const { setRegisterCourseData } = useRegisterCourseStore()
   const [student, setStudent] = useState<SearchValue>()
@@ -102,4 +100,4 @@ const FormCreateEditStudentCourse = ({
   )
 }
 
-export default FormCreateEditStudentCourse
+export default FormRegisterCourse

@@ -1,7 +1,8 @@
 import { Button, Form, FormProps, message, Modal, Steps, theme } from 'antd'
 import { ComponentChildProps } from 'src/types/common.type'
 import { useState } from 'react'
-import FormCreateEditStudentCourse from '../components/FormCreateEditStudentCourse'
+import FormRegisterCourse from '../components/FormRegisterStudentCourse'
+import ConfirmRegisterCourseScreen from '../components/ConfirmRegisterCourseScreen'
 
 const RegisterCourseScreen = ({ onClose, openModal }: ComponentChildProps) => {
   const { token } = theme.useToken()
@@ -25,7 +26,7 @@ const RegisterCourseScreen = ({ onClose, openModal }: ComponentChildProps) => {
   const steps = [
     {
       title: 'Đăng kí',
-      content: <FormCreateEditStudentCourse form={formRegister} />,
+      content: <FormRegisterCourse form={formRegister} />,
       footer: (
         <>
           <Button style={{ margin: '0 8px' }} onClick={prev}>
@@ -39,7 +40,7 @@ const RegisterCourseScreen = ({ onClose, openModal }: ComponentChildProps) => {
     },
     {
       title: 'Xác nhận',
-      content: 'Second-content',
+      content: <ConfirmRegisterCourseScreen />,
       footer: (
         <>
           <Button style={{ margin: '0 8px' }} onClick={prev}>
@@ -50,6 +51,10 @@ const RegisterCourseScreen = ({ onClose, openModal }: ComponentChildProps) => {
           </Button>
         </>
       ),
+    },
+    {
+      title: 'Thời gian',
+      content: 'Time available',
     },
     {
       title: 'Hoá đơn',
@@ -74,6 +79,7 @@ const RegisterCourseScreen = ({ onClose, openModal }: ComponentChildProps) => {
       open={openModal}
       footer={false}
       onCancel={onClose}
+      width={700}
     >
       <Steps current={step} items={items} />
       <div style={contentStyle}>{steps[step].content}</div>

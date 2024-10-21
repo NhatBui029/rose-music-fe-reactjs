@@ -40,7 +40,3 @@ export type PaginationParams = {
   page?: number
   pageSize?: number
 }
-
-export type StudentSearchParams = PaginationParams & {
-  content?: string
-}
