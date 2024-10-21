@@ -6,7 +6,7 @@ import {
   BodyFormData,
   ResponseGetDetail,
   ResponseGetListApi,
-  SearchParams,
+  PaginationParams,
 } from 'src/types/common.type'
 import { Teacher } from 'src/types/teacher.type'
 
@@ -19,7 +19,7 @@ const createTeacher = (data: TeacherForm) => {
   return apiInstance.post<TeacherForm, void>(API_ENPOINTS.TEACHER, data)
 }
 
-const getTeachers = (params: SearchParams) => {
+const getTeachers = (params: PaginationParams) => {
   return apiInstance.get<void, ResponseGetListApi<Teacher>>(
     API_ENPOINTS.TEACHER,
     {
@@ -49,7 +49,7 @@ export const useCreateTeacher = () => {
   })
 }
 
-export const useGetTeachers = (params: SearchParams) => {
+export const useGetTeachers = (params: PaginationParams) => {
   return useQuery<ResponseGetListApi<Teacher>, AxiosError>({
     queryKey: [GET_TEACHER_QUERY_KEY, params],
     queryFn: () => getTeachers(params),

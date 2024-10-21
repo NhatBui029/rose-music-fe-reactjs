@@ -16,7 +16,7 @@ export const ROUTE_PATHS = {
   SCHEDULE: '/schedule',
   ACCOUNT: '/account',
   FINANCE: '/finance',
-  REGISTER: '/course/register',
+  STUDENT_COURSE: '/course/student',
   DEFER: '/course/defer',
   REPORT: '/report',
   NOTICE: '/notice',

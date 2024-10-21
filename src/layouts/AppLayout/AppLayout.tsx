@@ -88,8 +88,8 @@ const AppLayout = () => {
               icon: <IoInformationCircle />,
             },
             {
-              key: ROUTE_PATHS.REGISTER,
-              label: <Link to={ROUTE_PATHS.REGISTER}>Đăng kí</Link>,
+              key: ROUTE_PATHS.STUDENT_COURSE,
+              label: <Link to={ROUTE_PATHS.STUDENT_COURSE}>Đăng kí</Link>,
               icon: <FaRegistered />,
             },
             {
@@ -206,7 +206,7 @@ const AppLayout = () => {
             </Button>
           </Sider>
           <Layout>
-            <Content 
+            <Content
             // style={{ height: '800px', overflowY: 'scroll' }}
             >
               <div

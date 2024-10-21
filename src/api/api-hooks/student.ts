@@ -2,12 +2,8 @@ import { API_ENPOINTS } from '@api/api.constants'
 import apiInstance from '@api/apiInstance'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
-import {
-  BodyFormData,
-  ResponseGetListApi,
-  SearchParams,
-} from 'src/types/common.type'
-import { Student } from 'src/types/student.type'
+import { BodyFormData, ResponseGetListApi } from 'src/types/common.type'
+import { Student, StudentSearchParams } from 'src/types/student.type'
 
 const GET_STUDENT_QUERY_KEY = 'GET_STUDENT'
 const GET_STUDENT_DETAIL_QUERY_KEY = 'GET_STUDENT_DETAIL'
@@ -18,7 +14,7 @@ const createStudent = (data: StudentForm) => {
   return apiInstance.post<StudentForm, void>(API_ENPOINTS.STUDENT, data)
 }
 
-const getStudents = (params: SearchParams) => {
+const getStudents = (params: StudentSearchParams) => {
   return apiInstance.get<void, ResponseGetListApi<Student>>(
     API_ENPOINTS.STUDENT,
     {
@@ -48,10 +44,14 @@ export const useCreateStudent = () => {
   })
 }
 
-export const useGetStudents = (params: SearchParams) => {
+export const useGetStudents = (
+  params: StudentSearchParams,
+  enabled: boolean = true,
+) => {
   return useQuery<ResponseGetListApi<Student>, AxiosError>({
     queryKey: [GET_STUDENT_QUERY_KEY, params],
     queryFn: () => getStudents(params),
+    enabled,
   })
 }
 

@@ -1,4 +1,4 @@
-import { SexEnum } from './common.type'
+import { PaginationParams, SexEnum } from './common.type'
 
 export type Student = {
   id: number
@@ -12,4 +12,17 @@ export type Student = {
   dateOfBirth: string
   imageUrl: string
   facilityId?: number
+}
+
+export type StudentAvailable = {
+  id: number
+  studentId: number
+  dayOfWeek: number
+  startTime: string
+  endTime: string
+  priority: number
+}
+
+export type StudentSearchParams = PaginationParams & {
+  content?: string
 }

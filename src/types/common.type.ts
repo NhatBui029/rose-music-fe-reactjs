@@ -36,9 +36,11 @@ export enum SexEnum {
   GIRL = 'Nữ',
 }
 
-export type SearchParams = {
-  content?: string
-  searchBy?: string
+export type PaginationParams = {
   page?: number
   pageSize?: number
+}
+
+export type StudentSearchParams = PaginationParams & {
+  content?: string
 }

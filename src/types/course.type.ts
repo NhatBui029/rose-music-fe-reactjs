@@ -1,3 +1,5 @@
+import { PaginationParams } from './common.type'
+
 export type Course = {
   id: number
   name: string
@@ -5,13 +7,34 @@ export type Course = {
   numberOfLesson: number
   numberOfLessonExcused: number
   price: number
-  description: string
+  description?: string
   level: StudentLevelEnum
   subjectId: number
   facilityId: number
 }
 
+export type StudentCourse = {
+  id: number
+  studentId: number
+  courseId: number
+  numberOfStudiedLesson: number
+  numberOfStudiedLessonExcused: number
+  status: StudentCourseStatusEnum
+  invoiceId: number
+}
+
+export enum StudentCourseStatusEnum {
+  ACTIVE = 'Đang học',
+  COMPLETED = 'Hoàn thành',
+  DEFERRED = 'Bảo lưu',
+}
+
 export enum StudentLevelEnum {
   BASIC = 'Cơ bản',
   ADVANCED = 'Nâng cao',
+}
+
+export type CourseSearchParams = PaginationParams & {
+  content?: string
+  facilityId?: number
 }

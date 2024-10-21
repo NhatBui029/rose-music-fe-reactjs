@@ -1,6 +1,6 @@
 import useYupValidation from '@hooks/useYupValidation'
 import { Button, Form, Input, InputNumber, Radio, Select } from 'antd'
-import createCourseSchema from '../course.schema'
+import createCourseSchema from '../InfoCourseScreen/course.schema'
 import { useEffect } from 'react'
 import { CreateEditFormProps, ResponseGetDetail } from 'src/types/common.type'
 import { Subject } from 'src/types/teacher.type'

@@ -1,5 +1,5 @@
 import { FormProps, message, Modal } from 'antd'
-import FormCreateEditCourse from './components/FormCreateEditCourse'
+import FormCreateEditCourse from '../components/FormCreateEditCourse'
 import { ComponentChildProps } from 'src/types/common.type'
 import { useEditCourse, useGetCourserDetail } from '@api/api-hooks/course'
 

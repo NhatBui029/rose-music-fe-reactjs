@@ -7,7 +7,7 @@ import {
   ResponseGetDetail,
   ResponseGetListApi,
 } from 'src/types/common.type'
-import { Course } from 'src/types/course.type'
+import { Course, CourseSearchParams } from 'src/types/course.type'
 
 const GET_COURSE_QUERY_KEY = 'GET_COURSE'
 const GET_COURSE_DETAIL_QUERY_KEY = 'GET_COURSE_DETAIL'
@@ -18,8 +18,13 @@ const createCourse = (data: CourseForm) => {
   return apiInstance.post<CourseForm, void>(API_ENPOINTS.COURSE, data)
 }
 
-const getCourses = () => {
-  return apiInstance.get<void, ResponseGetListApi<Course>>(API_ENPOINTS.COURSE)
+const getCourses = (searchParams: CourseSearchParams) => {
+  return apiInstance.get<void, ResponseGetListApi<Course>>(
+    API_ENPOINTS.COURSE,
+    {
+      params: searchParams,
+    },
+  )
 }
 
 const getCourseDetail = (courseId: number) => {
@@ -43,10 +48,14 @@ export const useCreateCourse = () => {
   })
 }
 
-export const useGetCourses = () => {
+export const useGetCourses = (
+  searchParams: CourseSearchParams,
+  enabled: boolean = true,
+) => {
   return useQuery<ResponseGetListApi<Course>, AxiosError>({
-    queryKey: [GET_COURSE_QUERY_KEY],
-    queryFn: () => getCourses(),
+    queryKey: [GET_COURSE_QUERY_KEY, searchParams],
+    queryFn: () => getCourses(searchParams),
+    enabled,
   })
 }
 

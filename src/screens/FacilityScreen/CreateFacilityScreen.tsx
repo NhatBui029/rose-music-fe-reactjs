@@ -11,12 +11,9 @@ import {
 } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import apiCloudinaryInstance from '../../api/apiCloudinaryInstance'
-import {
-  CreateEditFormItems,
-  ComponentChildProps,
-  Facility,
-} from '../../types/facility.type'
+import { Facility } from '../../types/facility.type'
 import { useCreateFacility } from '../../api/api-hooks/facility'
+import { ComponentChildProps, CreateEditFormItems } from 'src/types/common.type'
 
 const { TextArea } = Input
 
