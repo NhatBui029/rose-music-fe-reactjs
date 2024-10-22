@@ -1,12 +1,12 @@
 import * as yup from 'yup'
 
 const createRegisterCourseSchema = yup.object().shape({
-  students: yup
+  studentIds: yup
     .array()
     .of(yup.number())
     .min(1, 'Vui lòng chọn ít nhất 1 học viên')
     .required('Vui lòng chọn học viên'),
-  courses: yup
+  courseIds: yup
     .array()
     .of(yup.number())
     .min(1, 'Vui lòng chọn ít nhất 1 bộ môn')

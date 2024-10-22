@@ -1,22 +1,16 @@
+import { RegisterCourseDataCreate } from 'src/types/student-course'
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 
-export type RegisterCourseData = {
-  students: number[]
-  courses: number[]
-  quantity: number
-  voucherId: number | undefined
-}
-
 type RegisterCourseState = {
-  data: RegisterCourseData | null
-  setRegisterCourseData: (data: RegisterCourseData) => void
+  data: RegisterCourseDataCreate | null
+  setRegisterCourseData: (data: RegisterCourseDataCreate) => void
 }
 
 const useRegisterCourseStore = create<RegisterCourseState>()(
   devtools((set) => ({
     data: null,
-    setRegisterCourseData: (data: RegisterCourseData) =>
+    setRegisterCourseData: (data: RegisterCourseDataCreate) =>
       set({ data }, false, 'setRegisterCourseData'),
   })),
 )

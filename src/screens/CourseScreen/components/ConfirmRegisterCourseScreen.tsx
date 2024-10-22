@@ -28,12 +28,11 @@ const useCalculateAmount = (
 
     let discount = 0
     if (voucherData) {
-      console.log('🚀 ~ returnuseMemo ~ voucherData:', voucherData)
       const { discount: voucherDiscount, discountUnit } = voucherData
       discount =
         discountUnit === ('PERCENT' as DiscountUnitEnum)
           ? Math.round((total * voucherDiscount) / 100)
-          : discountUnit === ('VNĐ' as DiscountUnitEnum)
+          : discountUnit === ('VND' as DiscountUnitEnum)
             ? total - voucherDiscount
             : 0
     }
@@ -70,7 +69,7 @@ const ConfirmRegisterCourseScreen = () => {
 
   const { totalAmount, discount } = useCalculateAmount(
     coursesData?.data,
-    data?.students?.length,
+    studentsData?.data?.length,
     data?.quantity,
     data?.voucherId ? voucherData : undefined,
   )

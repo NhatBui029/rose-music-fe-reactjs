@@ -3,11 +3,11 @@ import { PaginationParams } from './common.type'
 export type Invoice = {
   id: number
   code: string
-  amount: number
-  issueDate: string
-  dueDate: string
+  totalAmount: number
+  discountAmount: number
   status: InvoiceStatusEnum
   description?: string
+  voucherId?: number
 }
 
 export type Voucher = {
@@ -39,7 +39,7 @@ export type Payment = {
 }
 
 export enum InvoiceStatusEnum {
-  PENDING = 'Đang chờ',
+  PENDING = 'Chưa thanh toán',
   PAID = 'Đã thanh toán',
   PARTIALLY_PAID = 'Thanh toán 1 phần',
   OVERDUE = 'Quá hạn',
@@ -48,7 +48,7 @@ export enum InvoiceStatusEnum {
 }
 
 export enum DiscountUnitEnum {
-  VNĐ = ' VNĐ',
+  VND = ' VNĐ',
   PERCENT = '%',
 }
 

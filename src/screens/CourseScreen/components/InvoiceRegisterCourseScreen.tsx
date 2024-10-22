@@ -1,17 +1,10 @@
-import {
-  Form,
-  Input,
-  Card,
-  Image,
-  InputNumber,
-  Row,
-  Col,
-  Flex,
-  Typography,
-} from 'antd'
-const { Paragraph, Text, Title } = Typography
+import useCreatedInvoiceStore from '@stores/created-invoice.store'
+import { Form, Input, Image, InputNumber, Flex, Typography } from 'antd'
+const { Paragraph, Text } = Typography
 const InvoiceRegisterCourseScreen = () => {
-  const invoiceCode = 'INV123456'
+  const { invoice } = useCreatedInvoiceStore()
+  console.log('🚀 ~ InvoiceRegisterCourseScreen ~ invoice:', invoice?.code)
+  const invoiceCode = invoice?.code
   const amountDue = '1,000,000'
   const qrCodeUrl = 'https://via.placeholder.com/150'
   const bankDetails = {
@@ -25,7 +18,7 @@ const InvoiceRegisterCourseScreen = () => {
     <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
       <Form>
         <Form.Item label="Mã hóa đơn">
-          <Input value={invoiceCode} readOnly />
+          <Input value={invoice?.code} readOnly />
         </Form.Item>
 
         <Form.Item label="Tổng số tiền">

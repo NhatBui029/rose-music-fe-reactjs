@@ -4,11 +4,17 @@ import { useState } from 'react'
 import FormRegisterCourse from '../components/FormRegisterStudentCourse'
 import ConfirmRegisterCourseScreen from '../components/ConfirmRegisterCourseScreen'
 import InvoiceRegisterCourseScreen from '../components/InvoiceRegisterCourseScreen'
+import useRegisterCourseStore from '@stores/register-course.store'
+import { useCreateStudentCourse } from '@api/api-hooks/student-course'
+import useCreatedInvoiceStore from '@stores/created-invoice.store'
 
 const RegisterCourseScreen = ({ onClose, openModal }: ComponentChildProps) => {
   const { token } = theme.useToken()
   const [step, setStep] = useState(0)
   const [formRegister] = Form.useForm()
+  const { data } = useRegisterCourseStore()
+  const { setCreatedInvoiceStore } = useCreatedInvoiceStore()
+  const { mutateAsync: registerCourse } = useCreateStudentCourse()
 
   const next = () => {
     setStep(step + 1)
@@ -25,6 +31,9 @@ const RegisterCourseScreen = ({ onClose, openModal }: ComponentChildProps) => {
   }
 
   const handleSubmitConfirm = async () => {
+    const invoice = await registerCourse(data)
+    console.log('🚀 ~ handleSubmitConfirm ~ invoice:', invoice)
+    setCreatedInvoiceStore(invoice)
     next()
   }
 

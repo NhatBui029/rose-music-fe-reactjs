@@ -15,9 +15,8 @@ import { useGetCourses } from '@api/api-hooks/course'
 import { useGetVouchers } from '@api/api-hooks/voucher'
 import { E2VvoucherDiscountUnit } from 'src/utils/course.util'
 import createRegisterCourseSchema from '../ParticipateCourseScreen/register-course.schema'
-import useRegisterCourseStore, {
-  RegisterCourseData,
-} from '@stores/register-course.store'
+import useRegisterCourseStore from '@stores/register-course.store'
+import { RegisterCourseDataCreate } from 'src/types/student-course'
 
 type RegisterCourseFormProps = {
   form: FormInstance
@@ -44,7 +43,7 @@ const FormRegisterCourse = ({ form }: RegisterCourseFormProps) => {
   const onFinish: FormProps['onFinish'] = async (values) => {
     try {
       console.log("🚀 ~ constonFinish:FormProps['onFinish']= ~ values:", values)
-      setRegisterCourseData(values as RegisterCourseData)
+      setRegisterCourseData(values as RegisterCourseDataCreate)
       // message.success(`Đã thêm thành công khóa học ${values.name}`)
     } catch (error) {
       message.error('Có lỗi xảy ra khi thêm khóa học mới')
@@ -59,7 +58,7 @@ const FormRegisterCourse = ({ form }: RegisterCourseFormProps) => {
       layout="horizontal"
       onFinish={onFinish}
     >
-      <Form.Item label="Học viên" name="students" rules={[validationRules]}>
+      <Form.Item label="Học viên" name="studentIds" rules={[validationRules]}>
         <DebounceSelect
           mode="multiple"
           value={student}
@@ -71,7 +70,7 @@ const FormRegisterCourse = ({ form }: RegisterCourseFormProps) => {
         />
       </Form.Item>
 
-      <Form.Item label="Khoá học" name="courses" rules={[validationRules]}>
+      <Form.Item label="Khoá học" name="courseIds" rules={[validationRules]}>
         <Select placeholder="Chọn khoá học" mode="multiple">
           {courses &&
             courses.data.map((course) => (

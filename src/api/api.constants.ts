@@ -23,4 +23,7 @@ export const API_ENPOINTS = {
   COURSE_DETAIL: (courseId: number) => `/course/${courseId}`,
   VOUCHER: '/voucher',
   VOUCHER_DETAIL: (voucherId: number) => `/voucher/${voucherId}`,
+  STUDENT_COURSE: `/student-course`,
+  STUDENT_COURSE_DETAIL: (studentCourseId: number) =>
+    `/student-course/${studentCourseId}`,
 }
