@@ -52,6 +52,7 @@ export const useGetStudents = (
     queryKey: [GET_STUDENT_QUERY_KEY, params],
     queryFn: () => getStudents(params),
     enabled,
+    staleTime: 5 * 60 * 1000,
   })
 }
 

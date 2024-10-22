@@ -45,7 +45,7 @@ const FormRegisterCourse = ({ form }: RegisterCourseFormProps) => {
     try {
       console.log("🚀 ~ constonFinish:FormProps['onFinish']= ~ values:", values)
       setRegisterCourseData(values as RegisterCourseData)
-      message.success(`Đã thêm thành công khóa học ${values.name}`)
+      // message.success(`Đã thêm thành công khóa học ${values.name}`)
     } catch (error) {
       message.error('Có lỗi xảy ra khi thêm khóa học mới')
     }
@@ -54,7 +54,7 @@ const FormRegisterCourse = ({ form }: RegisterCourseFormProps) => {
   return (
     <Form
       form={form}
-      labelCol={{ span: 7 }}
+      labelCol={{ span: 5 }}
       wrapperCol={{ span: 16 }}
       layout="horizontal"
       onFinish={onFinish}
@@ -87,7 +87,7 @@ const FormRegisterCourse = ({ form }: RegisterCourseFormProps) => {
       </Form.Item>
 
       <Form.Item label="Ưu đãi" name="voucherId" rules={[validationRules]}>
-        <Select placeholder="Chọn khoá học">
+        <Select placeholder="Chọn khoá học" allowClear>
           {vouchers &&
             vouchers.data.map((voucher) => (
               <Select.Option value={voucher.id} key={voucher.id}>

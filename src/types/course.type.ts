@@ -38,4 +38,5 @@ export enum StudentLevelEnum {
 export type CourseSearchParams = PaginationParams & {
   content?: string
   facilityId?: number
+  ids?: number[]
 }

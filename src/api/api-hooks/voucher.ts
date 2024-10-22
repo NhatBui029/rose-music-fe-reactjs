@@ -56,13 +56,19 @@ export const useGetVouchers = (
     queryKey: [GET_VOUCHER_QUERY_KEY, params],
     queryFn: () => getVouchers(params),
     enabled,
+    staleTime: 2 * 60 * 1000,
   })
 }
 
-export const useGetVoucherDetail = (voucherId: number) => {
+export const useGetVoucherDetail = (
+  voucherId: number,
+  enabled: boolean = true,
+) => {
   return useQuery<ResponseGetDetail<Voucher>, AxiosError>({
     queryKey: [GET_VOUCHER_DETAIL_QUERY_KEY, voucherId],
     queryFn: () => getVoucherDetail(voucherId),
+    enabled,
+    // staleTime: 2 * 60 * 1000,
   })
 }
 

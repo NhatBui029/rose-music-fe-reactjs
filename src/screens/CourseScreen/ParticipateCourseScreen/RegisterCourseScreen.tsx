@@ -1,8 +1,9 @@
-import { Button, Form, FormProps, message, Modal, Steps, theme } from 'antd'
+import { Button, Form, Modal, Steps, theme } from 'antd'
 import { ComponentChildProps } from 'src/types/common.type'
 import { useState } from 'react'
 import FormRegisterCourse from '../components/FormRegisterStudentCourse'
 import ConfirmRegisterCourseScreen from '../components/ConfirmRegisterCourseScreen'
+import InvoiceRegisterCourseScreen from '../components/InvoiceRegisterCourseScreen'
 
 const RegisterCourseScreen = ({ onClose, openModal }: ComponentChildProps) => {
   const { token } = theme.useToken()
@@ -23,17 +24,18 @@ const RegisterCourseScreen = ({ onClose, openModal }: ComponentChildProps) => {
     next()
   }
 
+  const handleSubmitConfirm = async () => {
+    next()
+  }
+
   const steps = [
     {
       title: 'Đăng kí',
       content: <FormRegisterCourse form={formRegister} />,
       footer: (
         <>
-          <Button style={{ margin: '0 8px' }} onClick={prev}>
-            Previous
-          </Button>
           <Button type="primary" onClick={handleSubmitResgiter}>
-            Next
+            Tiếp tục
           </Button>
         </>
       ),
@@ -44,21 +46,31 @@ const RegisterCourseScreen = ({ onClose, openModal }: ComponentChildProps) => {
       footer: (
         <>
           <Button style={{ margin: '0 8px' }} onClick={prev}>
-            Previous
+            Quay lại
           </Button>
-          <Button type="primary" onClick={handleSubmitResgiter}>
-            Next
+          <Button type="primary" onClick={handleSubmitConfirm}>
+            Tạo hóa đơn
           </Button>
         </>
       ),
     },
     {
-      title: 'Thời gian',
-      content: 'Time available',
+      title: 'Hoá đơn',
+      content: <InvoiceRegisterCourseScreen />,
+      footer: (
+        <>
+          <Button style={{ margin: '0 8px' }} onClick={prev}>
+            Quay lại
+          </Button>
+          <Button type="primary" onClick={handleSubmitResgiter}>
+            Tạo hóa đơn
+          </Button>
+        </>
+      ),
     },
     {
-      title: 'Hoá đơn',
-      content: 'Last-content',
+      title: 'Thời gian học',
+      content: 'Time available',
     },
   ]
 
@@ -83,7 +95,9 @@ const RegisterCourseScreen = ({ onClose, openModal }: ComponentChildProps) => {
     >
       <Steps current={step} items={items} />
       <div style={contentStyle}>{steps[step].content}</div>
-      <div style={{ marginTop: 24 }}>{steps[step].footer}</div>
+      <div style={{ marginTop: 24, display: 'flex', justifyContent: 'end' }}>
+        {steps[step].footer}
+      </div>
     </Modal>
   )
 }

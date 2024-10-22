@@ -56,6 +56,7 @@ export const useGetCourses = (
     queryKey: [GET_COURSE_QUERY_KEY, searchParams],
     queryFn: () => getCourses(searchParams),
     enabled,
+    staleTime: 5 * 60 * 1000,
   })
 }
 

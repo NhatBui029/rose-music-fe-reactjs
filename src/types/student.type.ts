@@ -25,4 +25,5 @@ export type StudentAvailable = {
 
 export type StudentSearchParams = PaginationParams & {
   content?: string
+  ids?: number[]
 }

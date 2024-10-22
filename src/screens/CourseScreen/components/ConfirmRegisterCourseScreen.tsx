@@ -2,30 +2,83 @@ import { Descriptions, Typography } from 'antd'
 import useRegisterCourseStore from '@stores/register-course.store'
 import { useGetStudents } from '@api/api-hooks/student'
 import { useGetCourses } from '@api/api-hooks/course'
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
+import { formatNumberToCurrency } from 'src/utils/common.util'
+import { useGetVoucherDetail } from '@api/api-hooks/voucher'
+import { DiscountUnitEnum, Voucher } from 'src/types/invoice.type'
+import { Student } from 'src/types/student.type'
+import { Course } from 'src/types/course.type'
+
+const useCalculateAmount = (
+  coursesData: Course[] | undefined,
+  studentsLength: number = 1,
+  quantity: number = 1,
+  voucherData: Voucher | undefined,
+) => {
+  return useMemo(() => {
+    if (!coursesData) {
+      return { totalAmount: 0, discount: 0 }
+    }
+
+    const total = coursesData.reduce(
+      (sum: number, course: Course) =>
+        sum + course.price * studentsLength * quantity,
+      0,
+    )
+
+    let discount = 0
+    if (voucherData) {
+      console.log('🚀 ~ returnuseMemo ~ voucherData:', voucherData)
+      const { discount: voucherDiscount, discountUnit } = voucherData
+      discount =
+        discountUnit === ('PERCENT' as DiscountUnitEnum)
+          ? Math.round((total * voucherDiscount) / 100)
+          : discountUnit === ('VNĐ' as DiscountUnitEnum)
+            ? total - voucherDiscount
+            : 0
+    }
+
+    return { totalAmount: total, discount }
+  }, [coursesData, studentsLength, quantity, voucherData])
+}
+
+const useFormattedData = (
+  studentsData: Student[] | undefined,
+  coursesData: Course[] | undefined,
+) => {
+  return useMemo(() => {
+    const students = studentsData?.map((student: Student) => student.name) || []
+    const courses = coursesData?.map((course: Course) => course.name) || []
+
+    return { students, courses }
+  }, [studentsData, coursesData])
+}
 
 const ConfirmRegisterCourseScreen = () => {
   const { data } = useRegisterCourseStore()
-  const [students, setStudents] = useState<string[]>([])
-  const [courses, setCourses] = useState<string[]>([])
+
   const { data: studentsData } = useGetStudents({
-    // ids: data?.students ?? [],
+    ids: data?.students ?? [],
   })
   const { data: coursesData } = useGetCourses({
-    // ids: data?.courses ?? [],
+    ids: data?.courses ?? [],
   })
+  const { data: voucherData } = useGetVoucherDetail(
+    data?.voucherId || 1,
+    !!data?.voucherId,
+  )
 
-  //   useEffect(() => {
-  //     if (studentsData) {
-  //       setStudents(studentsData.map((student) => student.name))
-  //     }
-  //     if (coursesData) {
-  //       setCourses(coursesData.map((course) => course.name))
-  //     }
-  //   }, [studentsData, coursesData])
+  const { totalAmount, discount } = useCalculateAmount(
+    coursesData?.data,
+    data?.students?.length,
+    data?.quantity,
+    data?.voucherId ? voucherData : undefined,
+  )
 
-  const totalAmount = 2
-  const discount = data?.voucherId ? 500 : 0
+  const { students, courses } = useFormattedData(
+    studentsData?.data,
+    coursesData?.data,
+  )
 
   return (
     <>
@@ -38,9 +91,14 @@ const ConfirmRegisterCourseScreen = () => {
           {courses.join(', ')}
         </Descriptions.Item>
         <Descriptions.Item label="Số lượng">{data?.quantity}</Descriptions.Item>
-        <Descriptions.Item label="Ưu đãi">{discount} VNĐ</Descriptions.Item>
         <Descriptions.Item label="Tổng tiền">
-          {totalAmount - discount} VNĐ
+          {formatNumberToCurrency(totalAmount)} VNĐ
+        </Descriptions.Item>
+        <Descriptions.Item label="Ưu đãi">
+          {formatNumberToCurrency(discount)} VNĐ
+        </Descriptions.Item>
+        <Descriptions.Item label="Còn lại">
+          {formatNumberToCurrency(totalAmount - discount)} VNĐ
         </Descriptions.Item>
       </Descriptions>
     </>

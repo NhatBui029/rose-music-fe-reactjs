@@ -48,7 +48,7 @@ export enum InvoiceStatusEnum {
 }
 
 export enum DiscountUnitEnum {
-  VND = ' VNĐ',
+  VNĐ = ' VNĐ',
   PERCENT = '%',
 }
 
