@@ -1,5 +1,14 @@
 import useYupValidation from '@hooks/useYupValidation'
-import { Button, DatePicker, Form, Input, Radio, Select, Upload } from 'antd'
+import {
+  Button,
+  DatePicker,
+  Form,
+  FormInstance,
+  Input,
+  Radio,
+  Select,
+  Upload,
+} from 'antd'
 import createStudentSchema from '../student.schema'
 import dayjs from 'dayjs'
 import { useGetFacilitys } from '@api/api-hooks/facility'
@@ -10,16 +19,17 @@ import { CreateEditFormProps, ResponseGetDetail } from 'src/types/common.type'
 
 type StudentCreateEditFormProps = CreateEditFormProps<
   ResponseGetDetail<Student>
->
+> & {
+  form: FormInstance
+}
 
 const FormCreateEditStudent = ({
   onFinish,
   data,
+  form,
 }: StudentCreateEditFormProps) => {
   const validationRules = useYupValidation(createStudentSchema)
   const { data: facilities } = useGetFacilitys()
-
-  const [form] = Form.useForm()
 
   useEffect(() => {
     if (data) {
@@ -110,11 +120,11 @@ const FormCreateEditStudent = ({
           <Button icon={<IoMdCloudUpload />}>Chọn ảnh</Button>
         </Upload>
       </Form.Item>
-      <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+      {/* <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
         <Button type="primary" htmlType="submit">
           Lưu
         </Button>
-      </Form.Item>
+      </Form.Item> */}
     </Form>
   )
 }

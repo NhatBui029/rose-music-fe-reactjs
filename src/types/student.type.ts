@@ -15,12 +15,13 @@ export type Student = {
 }
 
 export type StudentAvailable = {
-  id: number
+  id: number | null
   studentId: number
   dayOfWeek: number
   startTime: string
   endTime: string
   priority: number
+  isDelete: boolean
 }
 
 export type StudentSearchParams = PaginationParams & {

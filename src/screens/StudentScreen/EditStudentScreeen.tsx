@@ -1,4 +1,4 @@
-import { FormProps, message, Modal } from 'antd'
+import { Form, FormProps, message, Modal } from 'antd'
 import apiCloudinaryInstance from '@api/apiCloudinaryInstance'
 import { API_ENPOINTS } from '@api/api.constants'
 import apiInstance from '@api/apiInstance'
@@ -13,6 +13,7 @@ const EditStudentScreeen = ({
 }: ComponentChildProps & { id: number }) => {
   const { mutateAsync: editStudent } = useEditStudent(id)
   const { data: student } = useGetStudentDetail(id)
+  const [form] = Form.useForm()
 
   const onFinish: FormProps['onFinish'] = async (values) => {
     try {
@@ -59,7 +60,7 @@ const EditStudentScreeen = ({
       footer={false}
       onCancel={onClose}
     >
-      <FormCreateEditStudent onFinish={onFinish} data={student} />
+      <FormCreateEditStudent onFinish={onFinish} data={student} form={form} />
     </Modal>
   )
 }
