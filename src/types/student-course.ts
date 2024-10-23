@@ -1,8 +1,8 @@
 import { PaginationParams } from './common.type'
 
 export type RegisterCourseDataCreate = {
-  students: number[]
-  courses: number[]
+  studentIds: number[]
+  courseIds: number[]
   quantity: number
   voucherId: number | undefined
 }

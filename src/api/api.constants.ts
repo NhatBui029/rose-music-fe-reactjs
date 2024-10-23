@@ -15,6 +15,7 @@ export const API_ENPOINTS = {
   INSTRUMENT_EDIT: (facilityId: number, intrumentId: number) =>
     `/facility/${facilityId}/instruments/${intrumentId}`,
   STUDENT: '/student',
+  STUDENT_TIME_AVAILABLE: '/student/time-available',
   STUDENT_DETAIL: (studentId: number) => `/student/${studentId}`,
   TEACHER: '/teacher',
   TEACHER_DETAIL: (teacherId: number) => `/teacher/${teacherId}`,

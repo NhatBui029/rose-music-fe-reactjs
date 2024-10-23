@@ -14,7 +14,7 @@ const GET_STUDENT_DETAIL_QUERY_KEY = 'GET_STUDENT_DETAIL'
 
 type StudentForm = BodyFormData<Student>
 type StudentTimeAvailableForm = {
-  studentAvailables: StudentAvailable[]
+  studentTimeAvailables: StudentAvailable[]
 }
 
 const createStudent = (data: StudentForm) => {
@@ -22,7 +22,10 @@ const createStudent = (data: StudentForm) => {
 }
 
 const createStudentTimeAvailable = (data: StudentTimeAvailableForm) => {
-  return apiInstance.post<StudentForm, void>(API_ENPOINTS.STUDENT, data)
+  return apiInstance.put<StudentForm, void>(
+    API_ENPOINTS.STUDENT_TIME_AVAILABLE,
+    data,
+  )
 }
 
 const getStudents = (params: StudentSearchParams) => {
@@ -74,7 +77,6 @@ export const useGetStudents = (
     queryKey: [GET_STUDENT_QUERY_KEY, params],
     queryFn: () => getStudents(params),
     enabled,
-    staleTime: 5 * 60 * 1000,
   })
 }
 

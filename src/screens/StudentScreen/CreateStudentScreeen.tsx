@@ -3,15 +3,37 @@ import { Button, Form, FormProps, message, Modal, Steps, theme } from 'antd'
 import apiCloudinaryInstance from '@api/apiCloudinaryInstance'
 import { API_ENPOINTS } from '@api/api.constants'
 import apiInstance from '@api/apiInstance'
-import { useCreateStudent } from '@api/api-hooks/student'
+import {
+  useCreateStudent,
+  useCreateStudentTimeAvailable,
+} from '@api/api-hooks/student'
 import FormCreateEditStudent from './components/FormCreateEditStudent'
 import { ComponentChildProps } from 'src/types/common.type'
 import { useState } from 'react'
 import FormCreateEditTimeAvailable from './components/FormCreateEditTimeAvailable'
 
 const CreateStudentScreeen = ({ onClose, openModal }: ComponentChildProps) => {
-  const { mutateAsync: createStudent } = useCreateStudent()
   const [studentId, setStudentId] = useState<number>(1)
+  const { mutateAsync: createStudentTimeAvailable } =
+    useCreateStudentTimeAvailable()
+  const { mutateAsync: createStudent } = useCreateStudent()
+  const [step, setStep] = useState(0)
+  const { token } = theme.useToken()
+  const [formCreateStudent] = Form.useForm()
+  const [formCreateStudentAvailable] = Form.useForm()
+  const next = () => {
+    setStep(step + 1)
+  }
+
+  const handleSubmitCreateStudent = async () => {
+    await formCreateStudent.validateFields()
+    formCreateStudent.submit()
+    next()
+  }
+
+  const handleSubmitCreateTimeAvailable = () => {
+    formCreateStudentAvailable.submit()
+  }
   const onFinishCreateStudent: FormProps['onFinish'] = async (values) => {
     try {
       let imageUrl = import.meta.env.VITE_API_DEFAULT_IMAGE_URL
@@ -44,7 +66,6 @@ const CreateStudentScreeen = ({ onClose, openModal }: ComponentChildProps) => {
 
         setStudentId(newStudent.id)
 
-        // onClose()
         message.success(`Đã thêm thành công học viên ${data.name}`)
       } else {
         message.error('Chưa chọn ảnh')
@@ -57,31 +78,49 @@ const CreateStudentScreeen = ({ onClose, openModal }: ComponentChildProps) => {
   const onFinishCreateStudentAvailable: FormProps['onFinish'] = async (
     values,
   ) => {
-    console.log('🚀 ~ CreateStudentScreeen ~ values:', values)
-  }
-  const [step, setStep] = useState(0)
-  const { token } = theme.useToken()
-  const [formCreateStudent] = Form.useForm()
-  const [formCreateStudentAvailable] = Form.useForm()
-  const next = () => {
-    setStep(step + 1)
-  }
+    try {
+      const studentTimeAvailables = values.studentTimeAvailables
+        .map((value: any) => {
+          if (value.isDelete !== true)
+            return {
+              studentId,
+              startTime: value.time[0],
+              endTime: value.time[1],
+              dayOfWeek: value.dayOfWeek,
+            }
+        })
+        .filter(Boolean)
+      console.log(
+        '🚀 ~ CreateStudentScreeen ~ studentTimeAvailables:',
+        studentTimeAvailables,
+      )
 
-  const prev = () => {
-    setStep(step - 1)
-  }
-  const handleSubmitCreateStudent = async () => {
-    await formCreateStudent.validateFields()
-    formCreateStudent.submit()
-    next()
-  }
-
-  const handleSubmitCreateTimeAvailable = () => {
-    formCreateStudentAvailable.submit()
-    // next()
+      await createStudentTimeAvailable({ studentTimeAvailables })
+      onClose()
+      formCreateStudentAvailable.resetFields()
+      message.success(`Đã thêm thành công thời gian cho học viên `)
+    } catch (error) {
+      message.error('Có lỗi xảy ra khi thêm thời gian học')
+    }
   }
 
   const steps = [
+    {
+      title: 'Thông tin',
+      content: (
+        <FormCreateEditStudent
+          form={formCreateStudent}
+          onFinish={onFinishCreateStudent}
+        />
+      ),
+      footer: (
+        <>
+          <Button type="primary" onClick={handleSubmitCreateStudent}>
+            Tiếp tục
+          </Button>
+        </>
+      ),
+    },
     {
       title: 'Thời gian học',
       content: (
@@ -94,25 +133,6 @@ const CreateStudentScreeen = ({ onClose, openModal }: ComponentChildProps) => {
         <>
           <Button type="primary" onClick={handleSubmitCreateTimeAvailable}>
             Lưu
-          </Button>
-        </>
-      ),
-    },
-    {
-      title: 'Thông tin',
-      content: (
-        <FormCreateEditStudent
-          form={formCreateStudent}
-          onFinish={onFinishCreateStudent}
-        />
-      ),
-      footer: (
-        <>
-          <Button style={{ margin: '0 8px' }} onClick={prev}>
-            Quay lại
-          </Button>
-          <Button type="primary" onClick={handleSubmitCreateStudent}>
-            Tiếp tục
           </Button>
         </>
       ),
