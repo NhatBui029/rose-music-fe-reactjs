@@ -30,6 +30,7 @@ import ActionOnRow from '@components/ActionOnRow/ActionOnRow'
 const StudentScreen = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+
   const [searchText, setSearchText] = useState('')
   const searchInput = useRef<InputRef>(null)
 
@@ -43,21 +44,21 @@ const StudentScreen = () => {
     pageSize,
   })
 
-  const showCreateModal = () => {
+  const onOpenCreateModal = () => {
     setIsCreateModalOpen(true)
   }
 
-  const onCreateCloseModal = () => {
+  const onCloseCreateModal = () => {
     setIsCreateModalOpen(false)
     refetch()
   }
 
-  const showEditModal = (id: number) => {
+  const onOpenEditModal = (id: number) => {
     setStudentId(id)
     setIsEditModalOpen(true)
   }
 
-  const onEditCloseModal = () => {
+  const onCloseEditModal = () => {
     setIsEditModalOpen(false)
     refetch()
   }
@@ -241,7 +242,7 @@ const StudentScreen = () => {
       dataIndex: 'id',
       render: (id: number) => (
         <Popover
-          content={<ActionOnRow id={id} onOpenModal={showEditModal} />}
+          content={<ActionOnRow id={id} onOpenModal={onOpenEditModal} />}
           trigger="click"
         >
           ...
@@ -254,7 +255,7 @@ const StudentScreen = () => {
     <div>
       <Flex justify="space-between">
         <Typography.Title level={3}>Quản lí học viên</Typography.Title>
-        <Button type="primary" onClick={showCreateModal}>
+        <Button type="primary" onClick={onOpenCreateModal}>
           Thêm
         </Button>
       </Flex>
@@ -279,11 +280,11 @@ const StudentScreen = () => {
       </Row>
 
       <CreateStudentScreeen
-        onClose={onCreateCloseModal}
+        onClose={onCloseCreateModal}
         openModal={isCreateModalOpen}
       />
       <EditStudentScreeen
-        onClose={onEditCloseModal}
+        onClose={onCloseEditModal}
         id={studentId}
         openModal={isEditModalOpen}
       />

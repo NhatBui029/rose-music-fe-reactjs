@@ -6,9 +6,21 @@ import apiInstance from '@api/apiInstance'
 import { useCreateStudent } from '@api/api-hooks/student'
 import FormCreateEditStudent from './components/FormCreateEditStudent'
 import { ComponentChildProps } from 'src/types/common.type'
+import { useState } from 'react'
+import CreateStudentTimeAvailableScreen from './CreateStudentTimeAvailableScreen'
 
 const CreateStudentScreeen = ({ onClose, openModal }: ComponentChildProps) => {
   const { mutateAsync: createStudent } = useCreateStudent()
+  // const [isTimeAvailableCreateModalOpen, setIsTimeAvailableCreateModalOpen] =
+  //   useState(false)
+
+  // const onOpenTimeAvailableCreateModel = () => {
+  //   setIsTimeAvailableCreateModalOpen(true)
+  // }
+
+  // const onCloseTimeAvailableCreateModel = () => {
+  //   setIsTimeAvailableCreateModalOpen(false)
+  // }
 
   const onFinish: FormProps['onFinish'] = async (values) => {
     try {
@@ -42,6 +54,7 @@ const CreateStudentScreeen = ({ onClose, openModal }: ComponentChildProps) => {
 
         onClose()
         message.success(`Đã thêm thành công học viên ${data.name}`)
+        // onOpenTimeAvailableCreateModel()
       } else {
         message.error('Chưa chọn ảnh')
       }
@@ -50,14 +63,16 @@ const CreateStudentScreeen = ({ onClose, openModal }: ComponentChildProps) => {
     }
   }
   return (
-    <Modal
-      title="Thêm học viên mới"
-      open={openModal}
-      footer={false}
-      onCancel={onClose}
-    >
-      <FormCreateEditStudent onFinish={onFinish} />
-    </Modal>
+    <>
+      <Modal
+        title="Thêm học viên mới"
+        open={openModal}
+        footer={false}
+        onCancel={onClose}
+      >
+        <FormCreateEditStudent onFinish={onFinish} />
+      </Modal>
+    </>
   )
 }
 

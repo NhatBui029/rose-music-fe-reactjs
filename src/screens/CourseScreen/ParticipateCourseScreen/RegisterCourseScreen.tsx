@@ -32,7 +32,6 @@ const RegisterCourseScreen = ({ onClose, openModal }: ComponentChildProps) => {
 
   const handleSubmitConfirm = async () => {
     const invoice = await registerCourse(data)
-    console.log('🚀 ~ handleSubmitConfirm ~ invoice:', invoice)
     setCreatedInvoiceStore(invoice)
     next()
   }
@@ -68,11 +67,8 @@ const RegisterCourseScreen = ({ onClose, openModal }: ComponentChildProps) => {
       content: <InvoiceRegisterCourseScreen />,
       footer: (
         <>
-          <Button style={{ margin: '0 8px' }} onClick={prev}>
-            Quay lại
-          </Button>
           <Button type="primary" onClick={handleSubmitResgiter}>
-            Tạo hóa đơn
+            Tiếp tục
           </Button>
         </>
       ),

@@ -171,7 +171,7 @@ const ParticipateCourseScreen = () => {
           Quản lí thông tin khóa học
         </Typography.Title>
         <Button type="primary" onClick={showCreateModal}>
-          Thêm
+          Đăng ki
         </Button>
       </Flex>
       <Row gutter={[10, 10]}>

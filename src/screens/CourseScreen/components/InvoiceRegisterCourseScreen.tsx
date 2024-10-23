@@ -1,52 +1,80 @@
 import useCreatedInvoiceStore from '@stores/created-invoice.store'
-import { Form, Input, Image, InputNumber, Flex, Typography } from 'antd'
-const { Paragraph, Text } = Typography
+import {
+  Form,
+  Input,
+  InputNumber,
+  Flex,
+  Descriptions,
+  Image,
+  Typography,
+} from 'antd'
+import { formatNumberToCurrency } from 'src/utils/common.util'
+import { VietQR } from 'vietqr'
+
 const InvoiceRegisterCourseScreen = () => {
   const { invoice } = useCreatedInvoiceStore()
-  console.log('🚀 ~ InvoiceRegisterCourseScreen ~ invoice:', invoice?.code)
   const invoiceCode = invoice?.code
-  const amountDue = '1,000,000'
-  const qrCodeUrl = 'https://via.placeholder.com/150'
+  const invoiceTotalAmount =
+    (invoice?.totalAmount || 0) - (invoice?.discountAmount || 0)
   const bankDetails = {
-    STK: '23842334',
-    bankName: 'ABC Bank',
-    accountHolder: 'John Doe',
-    transferContent: 'Payment for Course INV123456',
+    accountNumber: '6814022002',
+    bank: 'Techcombank',
+    accountName: 'BUI TUAN NHAT',
+    memo: `${invoiceCode}`,
   }
+  let vietQR = new VietQR({
+    clientID: import.meta.env.VITE_VIET_QR_CLIENT_ID,
+    apiKey: import.meta.env.VITE_VIET_QR_API_KEY,
+  })
+
+  const qrCodeUrl = vietQR.genQuickLink({
+    ...bankDetails,
+    bank: '970407',
+    amount: invoice?.totalAmount || 0,
+    template: 'compact2',
+    media: '.jpg',
+  })
 
   return (
     <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
       <Form>
         <Form.Item label="Mã hóa đơn">
-          <Input value={invoice?.code} readOnly />
+          <Input value={invoiceCode} readOnly />
         </Form.Item>
 
         <Form.Item label="Tổng số tiền">
-          <InputNumber value={amountDue} readOnly addonAfter={'VNĐ'} />
+          <InputNumber
+            value={formatNumberToCurrency(invoiceTotalAmount)}
+            readOnly
+            addonAfter={'VNĐ'}
+          />
         </Form.Item>
 
         <Form.Item>
-          <Flex align="center" justify="space-between">
-            <Flex vertical>
-              <Flex gap={5}>
-                <Text>STK: </Text>
-                <Paragraph copyable>{bankDetails.STK}</Paragraph>
-              </Flex>
-              <Flex gap={5}>
-                <Text>Ngân hàng: </Text>
-                <Paragraph>{bankDetails.bankName}</Paragraph>
-              </Flex>
-              <Flex gap={5}>
-                <Text>Tên người nhận: </Text>
-                <Paragraph>{bankDetails.accountHolder}</Paragraph>
-              </Flex>
-              <Flex gap={5}>
-                <Text>Nội dung: </Text>
-                <Paragraph>{bankDetails.transferContent}</Paragraph>
-              </Flex>
-            </Flex>
-
-            <Image width={150} src={qrCodeUrl} alt="QR Code" />
+          <Flex align="center" justify="space-between" gap={20}>
+            <Descriptions column={1} style={{ width: '60%' }}>
+              <Descriptions.Item label="STK">
+                {bankDetails.accountNumber}
+              </Descriptions.Item>
+              <Descriptions.Item label="Ngân hàng">
+                {bankDetails.bank}
+              </Descriptions.Item>
+              <Descriptions.Item label="Tên người nhận">
+                {bankDetails.accountName}
+              </Descriptions.Item>
+              <Descriptions.Item label="Nội dung">
+                {bankDetails.memo}
+              </Descriptions.Item>
+              <Descriptions.Item>
+                <Typography.Text
+                  copyable={{ text: qrCodeUrl }}
+                  type={'secondary'}
+                >
+                  Copy link hóa đơn
+                </Typography.Text>
+              </Descriptions.Item>
+            </Descriptions>
+            <Image width={200} src={qrCodeUrl || '-'} />
           </Flex>
         </Form.Item>
       </Form>
