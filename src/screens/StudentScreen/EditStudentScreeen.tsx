@@ -18,7 +18,7 @@ const EditStudentScreeen = ({
   id,
 }: ComponentChildProps & { id: number }) => {
   const { mutateAsync: editStudent } = useEditStudent(id)
-  const { data: student } = useGetStudentDetail(id)
+  const { data: student, refetch } = useGetStudentDetail(id)
   const { mutateAsync: updateStudentTimeAvailable } =
     useCreateStudentTimeAvailable()
   const [step, setStep] = useState(0)
@@ -98,6 +98,8 @@ const EditStudentScreeen = ({
 
       await updateStudentTimeAvailable({ studentTimeAvailables })
       onClose()
+      setStep(0)
+      refetch()
       message.success(`Đã thay đổi thời gian học cho học viên `)
     } catch (error) {
       message.error('Có lỗi xảy ra khi thay đổi thời gian học')

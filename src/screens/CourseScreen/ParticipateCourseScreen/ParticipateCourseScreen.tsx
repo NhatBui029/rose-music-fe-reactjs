@@ -2,8 +2,12 @@ import {
   Button,
   Col,
   Flex,
+  Input,
+  Pagination,
   Popover,
+  Progress,
   Row,
+  Select,
   Table,
   TableColumnsType,
   Tag,
@@ -12,32 +16,35 @@ import {
 import { useState } from 'react'
 import RegisterCourseScreen from './RegisterCourseScreen'
 import EditCourseScreeen from './EditCourseScreeen'
-import { ResponseGetDetail } from 'src/types/common.type'
-import { useGetSubjects } from '@api/api-hooks/subject'
-import { Subject } from 'src/types/teacher.type'
-import { useGetCourses } from '@api/api-hooks/course'
-import { Course, StudentLevelEnum } from 'src/types/course.type'
-import { E2Vlevel } from 'src/utils/course.util'
-import { Facility } from 'src/types/facility.type'
-import { useGetFacilitys } from '@api/api-hooks/facility'
 import ActionOnRow from '@components/ActionOnRow/ActionOnRow'
+import { useGetStudentCourses } from '@api/api-hooks/student-course'
+import {
+  StudentCourse,
+  StudentCourseStatusColor,
+  StudentCourseStatusEnum,
+} from 'src/types/student-course'
+import { E2VStudentCourseStatus } from 'src/utils/student-course.util'
+import { SearchProps } from 'antd/es/input'
+import { useGetFacilitys } from '@api/api-hooks/facility'
 
 const ParticipateCourseScreen = () => {
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [isOpenRegisterModal, setIsOpenRegisterModal] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-
-  const { data: subjects } = useGetSubjects()
-  const { data: facilities } = useGetFacilitys()
   const [courseId, setCourseId] = useState<number>(1)
+  const [page, setPage] = useState<number>(1)
+  const [pageSize, setPageSize] = useState<number>(10)
+  const { data: studentCourses, refetch } = useGetStudentCourses({
+    page,
+    pageSize,
+  })
+  const { data: facilities } = useGetFacilitys()
 
-  const { data: courses, refetch } = useGetCourses()
-
-  const showCreateModal = () => {
-    setIsCreateModalOpen(true)
+  const onOpenRegisterModal = () => {
+    setIsOpenRegisterModal(true)
   }
 
-  const onCreateCloseModal = () => {
-    setIsCreateModalOpen(false)
+  const onCloseRegisterModal = () => {
+    setIsOpenRegisterModal(false)
     refetch()
   }
 
@@ -51,104 +58,73 @@ const ParticipateCourseScreen = () => {
     refetch()
   }
 
-  const columns: TableColumnsType<ResponseGetDetail<Course>> = [
+  const handlePaginationChange = (page: number, pageSize: number) => {
+    setPage(page)
+    setPageSize(pageSize)
+  }
+
+  const columns: TableColumnsType<StudentCourse> = [
     {
       title: 'ID',
       dataIndex: 'id',
       key: 'id',
     },
     {
-      title: 'Tên',
-      key: 'name',
-      dataIndex: 'name',
+      title: 'Tên học viên',
+      key: 'student',
+      dataIndex: 'student',
+      render: (student: { name: string }) => student?.name,
       sorter: {
-        compare: (first, second) => first.name.localeCompare(second.name),
+        compare: (first, second) =>
+          first.student.name.localeCompare(second.student.name),
         multiple: 3,
       },
     },
     {
-      title: 'Trình độ',
-      key: 'level',
-      dataIndex: 'level',
-      render: (level: string) => E2Vlevel(level),
-      filters: Object.keys(StudentLevelEnum).map((level) => ({
-        text: E2Vlevel(level),
-        value: level,
-      })),
-      onFilter: (value, record) => record.level === value,
-    },
-    {
-      title: 'Giá tiền',
-      key: 'price',
-      dataIndex: 'price',
+      title: 'Khóa học',
+      key: 'course',
+      dataIndex: 'course',
+      render: (course: { name: string }) => course?.name,
       sorter: {
-        compare: (first, second) => first.price - second.price,
+        compare: (first, second) =>
+          first.course.name.localeCompare(second.course.name),
+        multiple: 3,
       },
     },
     {
-      title: 'Số buổi học',
-      key: 'numberOfLesson',
-      dataIndex: 'numberOfLesson',
+      title: 'Số buổi đã học',
+      key: 'progress',
+      dataIndex: 'numberOfStudiedLesson',
+      render: (value, record) => {
+        return (
+          <Progress
+            percent={Math.round((value * 100) / record.course.numberOfLesson)}
+            format={() => `${value}/${record.course.numberOfLesson}`}
+          />
+        )
+      },
     },
     {
-      title: 'Số buổi nghỉ phép',
-      key: 'numberOfLessonExcused',
-      dataIndex: 'numberOfLessonExcused',
+      title: 'Số buổi đã nghỉ phép',
+      key: 'numberOfStudiedLessonExcused',
+      dataIndex: 'numberOfStudiedLessonExcused',
     },
     {
-      title: 'Thời lượng buổi học',
-      key: 'duration',
-      dataIndex: 'duration',
-      render: (duration: string) => `${duration} phút`,
-    },
-    {
-      title: 'Bộ môn',
-      key: 'subjectId',
-      dataIndex: 'subjectId',
-      render: (subjectId: number) => (
-        <Tag
-          color={
-            subjects?.data.find((subject: Subject) => subject.id === subjectId)
-              ?.color
-          }
-        >
-          {
-            subjects?.data.find((subject: Subject) => subject.id === subjectId)
-              ?.name
-          }
+      title: 'Trạng thái',
+      key: 'status',
+      dataIndex: 'status',
+      render: (status: keyof typeof StudentCourseStatusEnum) => (
+        <Tag color={StudentCourseStatusColor[status]}>
+          {StudentCourseStatusEnum[status]}
         </Tag>
       ),
-      filters: subjects?.data.map((subject: Subject) => ({
-        text: subject.name,
-        value: subject.id,
+      filters: Object.keys(StudentCourseStatusEnum).map((status) => ({
+        text: E2VStudentCourseStatus(status),
+        value: status,
       })),
-      onFilter: (value, record) => record.subjectId === value,
+      onFilter: (value, record) => record.status === value,
     },
-    {
-      title: 'Cơ sở',
-      key: 'facilityId',
-      dataIndex: 'facilityId',
-      render: (facilityId: number) => (
-        <Tag
-          color={
-            facilities?.data.find(
-              (facility: Facility) => facility.id === facilityId,
-            )?.color
-          }
-        >
-          {
-            facilities?.data.find(
-              (facility: Facility) => facility.id === facilityId,
-            )?.name
-          }
-        </Tag>
-      ),
-      filters: facilities?.data.map((facility: Facility) => ({
-        text: facility.name,
-        value: facility.id,
-      })),
-      onFilter: (value, record) => record.facilityId === value,
-    },
+
     {
       title: '...',
       key: 'id',
@@ -157,40 +133,70 @@ const ParticipateCourseScreen = () => {
         <Popover
           content={<ActionOnRow id={id} onOpenModal={showEditModal} />}
           trigger="click"
+          style={{ cursor: 'pointer' }}
         >
           ...
         </Popover>
       ),
     },
   ]
+  const onSearch: SearchProps['onSearch'] = (value, _e, info) => {
+    console.log('🚀 ~ ParticipateCourseScreen ~ _e:', _e)
+    console.log('🚀 ~ ParticipateCourseScreen ~ value:', value)
+    console.log(info?.source)
+  }
 
   return (
     <div>
       <Flex justify="space-between">
-        <Typography.Title level={3}>
-          Quản lí thông tin khóa học
-        </Typography.Title>
-        <Button type="primary" onClick={showCreateModal}>
-          Đăng ki
+        <Typography.Title level={3}>Quản lí tiến trình học</Typography.Title>
+        <Button type="primary" onClick={onOpenRegisterModal}>
+          Đăng kí
         </Button>
+      </Flex>
+      <Flex
+        style={{ marginTop: 10, marginBottom: 20 }}
+        align="center"
+        justify="space-between"
+      >
+        <Input.Search
+          style={{ width: '20%' }}
+          allowClear
+          onSearch={onSearch}
+          placeholder="Tìm kiếm học viên theo tên"
+        />
+        <Select placeholder="Chọn cơ sở" style={{ width: '10%' }} allowClear>
+          {facilities &&
+            facilities.data.map((facility) => (
+              <Select.Option value={facility.id} key={facility.id}>
+                {facility.name}
+              </Select.Option>
+            ))}
+        </Select>
+        <Pagination
+          current={page}
+          pageSize={pageSize}
+          total={studentCourses?.meta?.total}
+          showSizeChanger={true}
+          pageSizeOptions={['10', '20', '50', '100']}
+          showTotal={(total) => `Tổng số: ${total}`}
+          onChange={handlePaginationChange}
+        />
       </Flex>
       <Row gutter={[10, 10]}>
         <Col span={24}>
           <Table
             columns={columns}
-            dataSource={courses?.data}
+            dataSource={studentCourses?.data}
             rowKey={(record) => record.id}
             pagination={false}
           />
         </Col>
-        {/* <Col span={6}>
-          <Flex style={{ width: '30%' }}>side</Flex>
-        </Col> */}
       </Row>
 
       <RegisterCourseScreen
-        onClose={onCreateCloseModal}
-        openModal={isCreateModalOpen}
+        onClose={onCloseRegisterModal}
+        openModal={isOpenRegisterModal}
       />
       <EditCourseScreeen
         onClose={onEditCloseModal}

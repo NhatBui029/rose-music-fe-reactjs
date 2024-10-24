@@ -17,10 +17,10 @@ import { useGetSubjects } from '@api/api-hooks/subject'
 import { Subject } from 'src/types/teacher.type'
 import { useGetCourses } from '@api/api-hooks/course'
 import { Course, StudentLevelEnum } from 'src/types/course.type'
-import { E2Vlevel } from 'src/utils/course.util'
 import { Facility } from 'src/types/facility.type'
 import { useGetFacilitys } from '@api/api-hooks/facility'
 import ActionOnRow from '@components/ActionOnRow/ActionOnRow'
+import { E2Vlevel } from 'src/utils/student-course.util'
 
 const CourseScreen = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)

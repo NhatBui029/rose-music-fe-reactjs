@@ -3,10 +3,10 @@ import apiInstance from '@api/apiInstance'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { ResponseGetDetail, ResponseGetListApi } from 'src/types/common.type'
-import { StudentCourse } from 'src/types/course.type'
 import { Invoice } from 'src/types/invoice.type'
 import {
   RegisterCourseDataCreate,
+  StudentCourse,
   StudentCourseSearchParams,
 } from 'src/types/student-course'
 
@@ -61,7 +61,7 @@ export const useCreateStudentCourse = () => {
 
 export const useGetStudentCourses = (
   params: StudentCourseSearchParams,
-  enabled: boolean,
+  enabled: boolean = true,
 ) => {
   return useQuery<ResponseGetListApi<StudentCourse>, AxiosError>({
     queryKey: [GET_STUDENT_COURSE_QUERY_KEY, params],
