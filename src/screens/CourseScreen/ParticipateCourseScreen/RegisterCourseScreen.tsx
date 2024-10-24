@@ -1,4 +1,4 @@
-import { Button, Form, Modal, Steps, theme } from 'antd'
+import { Button, Form, Modal, Steps, message, theme } from 'antd'
 import { ComponentChildProps } from 'src/types/common.type'
 import { useState } from 'react'
 import FormRegisterCourse from '../components/FormRegisterStudentCourse'
@@ -32,6 +32,7 @@ const RegisterCourseScreen = ({ onClose, openModal }: ComponentChildProps) => {
 
   const handleSubmitConfirm = async () => {
     const invoice = await registerCourse(data)
+    message.success('Tạo hóa đơn thành công')
     setCreatedInvoiceStore(invoice)
     next()
   }
@@ -67,15 +68,18 @@ const RegisterCourseScreen = ({ onClose, openModal }: ComponentChildProps) => {
       content: <InvoiceRegisterCourseScreen />,
       footer: (
         <>
-          <Button type="primary" onClick={handleSubmitResgiter}>
-            Tiếp tục
+          <Button
+            type="primary"
+            onClick={() => {
+              onClose()
+              setStep(0)
+              formRegister.resetFields()
+            }}
+          >
+            Xong
           </Button>
         </>
       ),
-    },
-    {
-      title: 'Thời gian học',
-      content: 'Time available',
     },
   ]
 

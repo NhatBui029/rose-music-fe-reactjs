@@ -57,10 +57,10 @@ const ConfirmRegisterCourseScreen = () => {
   const { data } = useRegisterCourseStore()
 
   const { data: studentsData } = useGetStudents({
-    ids: data?.students ?? [],
+    ids: data?.studentIds ?? [],
   })
   const { data: coursesData } = useGetCourses({
-    ids: data?.courses ?? [],
+    ids: data?.courseIds ?? [],
   })
   const { data: voucherData } = useGetVoucherDetail(
     data?.voucherId || 1,

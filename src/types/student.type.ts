@@ -12,15 +12,16 @@ export type Student = {
   dateOfBirth: string
   imageUrl: string
   facilityId?: number
+  studentAvailables?: StudentAvailable[]
 }
 
 export type StudentAvailable = {
-  id: number
+  id: number | undefined
   studentId: number
   dayOfWeek: number
   startTime: string
   endTime: string
-  priority: number
+  isDelete: boolean | undefined
 }
 
 export type StudentSearchParams = PaginationParams & {

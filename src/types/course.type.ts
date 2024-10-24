@@ -13,23 +13,6 @@ export type Course = {
   facilityId: number
 }
 
-export type StudentCourse = {
-  id: number
-  studentId: number
-  courseId: number
-  numberOfStudiedLesson: number
-  numberOfStudiedLessonExcused: number
-  status: StudentCourseStatusEnum
-  invoiceId: number
-}
-
-export enum StudentCourseStatusEnum {
-  PENDING = 'Đang chờ',
-  ACTIVE = 'Đang học',
-  COMPLETED = 'Hoàn thành',
-  DEFERRED = 'Bảo lưu',
-}
-
 export enum StudentLevelEnum {
   BASIC = 'Cơ bản',
   ADVANCED = 'Nâng cao',

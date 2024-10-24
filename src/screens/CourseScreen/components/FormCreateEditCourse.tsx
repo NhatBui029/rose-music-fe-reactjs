@@ -6,9 +6,9 @@ import { CreateEditFormProps, ResponseGetDetail } from 'src/types/common.type'
 import { Subject } from 'src/types/teacher.type'
 import { useGetSubjects } from '@api/api-hooks/subject'
 import { Course, StudentLevelEnum } from 'src/types/course.type'
-import { E2Vlevel } from 'src/utils/course.util'
 import TextArea from 'antd/es/input/TextArea'
 import { useGetFacilitys } from '@api/api-hooks/facility'
+import { E2Vlevel } from 'src/utils/student-course.util'
 
 type CourseCreateEditFormProps = CreateEditFormProps<ResponseGetDetail<Course>>
 
