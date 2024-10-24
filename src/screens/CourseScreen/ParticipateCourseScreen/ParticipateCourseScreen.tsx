@@ -15,7 +15,6 @@ import {
 } from 'antd'
 import { useState } from 'react'
 import RegisterCourseScreen from './RegisterCourseScreen'
-import EditCourseScreeen from './EditCourseScreeen'
 import ActionOnRow from '@components/ActionOnRow/ActionOnRow'
 import { useGetStudentCourses } from '@api/api-hooks/student-course'
 import {
@@ -26,18 +25,31 @@ import {
 import { E2VStudentCourseStatus } from 'src/utils/student-course.util'
 import { SearchProps } from 'antd/es/input'
 import { useGetFacilitys } from '@api/api-hooks/facility'
+import { useGetCourses } from '@api/api-hooks/course'
 
 const ParticipateCourseScreen = () => {
   const [isOpenRegisterModal, setIsOpenRegisterModal] = useState(false)
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const [courseId, setCourseId] = useState<number>(1)
   const [page, setPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<number>(10)
+  const [facilityId, setFacilityId] = useState<number>()
+  const [courseId, setCourseId] = useState<number>()
+  const [content, setContent] = useState<string>('')
+  const [status, setStatus] = useState<StudentCourseStatusEnum>()
   const { data: studentCourses, refetch } = useGetStudentCourses({
     page,
     pageSize,
+    facilityId,
+    courseId,
+    status,
+    content,
   })
   const { data: facilities } = useGetFacilitys()
+  const { data: courses } = useGetCourses(
+    {
+      facilityId,
+    },
+    !!facilityId,
+  )
 
   const onOpenRegisterModal = () => {
     setIsOpenRegisterModal(true)
@@ -48,19 +60,26 @@ const ParticipateCourseScreen = () => {
     refetch()
   }
 
-  const showEditModal = (id: number) => {
-    setCourseId(id)
-    setIsEditModalOpen(true)
-  }
-
-  const onEditCloseModal = () => {
-    setIsEditModalOpen(false)
-    refetch()
-  }
-
   const handlePaginationChange = (page: number, pageSize: number) => {
     setPage(page)
     setPageSize(pageSize)
+  }
+
+  const handleSelectFacilityChange = (facilityId: number) => {
+    setFacilityId(facilityId)
+  }
+
+  const handleSelectCourseChange = (courseId: number) => {
+    setCourseId(courseId)
+  }
+
+  const handleSelectStatusChange = (status: string) => {
+    setStatus(status as StudentCourseStatusEnum)
+  }
+
+  const onSearchName: SearchProps['onSearch'] = (value, _e, info) => {
+    setContent(value)
+    console.log(info?.source)
   }
 
   const columns: TableColumnsType<StudentCourse> = [
@@ -85,11 +104,6 @@ const ParticipateCourseScreen = () => {
       key: 'course',
       dataIndex: 'course',
       render: (course: { name: string }) => course?.name,
-      sorter: {
-        compare: (first, second) =>
-          first.course.name.localeCompare(second.course.name),
-        multiple: 3,
-      },
     },
     {
       title: 'Số buổi đã học',
@@ -118,11 +132,6 @@ const ParticipateCourseScreen = () => {
           {StudentCourseStatusEnum[status]}
         </Tag>
       ),
-      filters: Object.keys(StudentCourseStatusEnum).map((status) => ({
-        text: E2VStudentCourseStatus(status),
-        value: status,
-      })),
-      onFilter: (value, record) => record.status === value,
     },
 
     {
@@ -131,7 +140,7 @@ const ParticipateCourseScreen = () => {
       dataIndex: 'id',
       render: (id: number) => (
         <Popover
-          content={<ActionOnRow id={id} onOpenModal={showEditModal} />}
+          content={<ActionOnRow id={id} onOpenModal={() => {}} />}
           trigger="click"
           style={{ cursor: 'pointer' }}
         >
@@ -140,11 +149,6 @@ const ParticipateCourseScreen = () => {
       ),
     },
   ]
-  const onSearch: SearchProps['onSearch'] = (value, _e, info) => {
-    console.log('🚀 ~ ParticipateCourseScreen ~ _e:', _e)
-    console.log('🚀 ~ ParticipateCourseScreen ~ value:', value)
-    console.log(info?.source)
-  }
 
   return (
     <div>
@@ -162,16 +166,46 @@ const ParticipateCourseScreen = () => {
         <Input.Search
           style={{ width: '20%' }}
           allowClear
-          onSearch={onSearch}
+          onSearch={onSearchName}
           placeholder="Tìm kiếm học viên theo tên"
         />
-        <Select placeholder="Chọn cơ sở" style={{ width: '10%' }} allowClear>
+        <Select
+          placeholder="Chọn cơ sở"
+          style={{ width: '10%' }}
+          allowClear
+          onChange={handleSelectFacilityChange}
+        >
           {facilities &&
             facilities.data.map((facility) => (
               <Select.Option value={facility.id} key={facility.id}>
                 {facility.name}
               </Select.Option>
             ))}
+        </Select>
+        <Select
+          placeholder="Chọn khoá học"
+          style={{ width: '13%' }}
+          allowClear
+          onChange={handleSelectCourseChange}
+        >
+          {courses &&
+            courses.data.map((course) => (
+              <Select.Option value={course.id} key={course.id}>
+                {course.name}
+              </Select.Option>
+            ))}
+        </Select>
+        <Select
+          placeholder="Trạng thái"
+          style={{ width: '10%' }}
+          allowClear
+          onChange={handleSelectStatusChange}
+        >
+          {Object.keys(StudentCourseStatusEnum).map((status, idx) => (
+            <Select.Option key={idx} value={status}>
+              {E2VStudentCourseStatus(status)}
+            </Select.Option>
+          ))}
         </Select>
         <Pagination
           current={page}
@@ -198,11 +232,11 @@ const ParticipateCourseScreen = () => {
         onClose={onCloseRegisterModal}
         openModal={isOpenRegisterModal}
       />
-      <EditCourseScreeen
+      {/* <EditCourseScreeen
         onClose={onEditCloseModal}
         id={courseId}
         openModal={isEditModalOpen}
-      />
+      /> */}
     </div>
   )
 }

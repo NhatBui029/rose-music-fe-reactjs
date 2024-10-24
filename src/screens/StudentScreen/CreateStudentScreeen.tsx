@@ -93,9 +93,9 @@ const CreateStudentScreeen = ({ onClose, openModal }: ComponentChildProps) => {
 
       await createStudentTimeAvailable({ studentTimeAvailables })
       onClose()
+      setStep(0)
       formCreateStudent.resetFields()
       formCreateStudentAvailable.resetFields()
-      setStep(0)
       message.success(`Đã thêm thành công thời gian cho học viên `)
     } catch (error) {
       message.error('Có lỗi xảy ra khi thêm thời gian học')

@@ -8,11 +8,6 @@ export interface DebounceSelectProps<ValueType>
   debounceTimeout?: number
 }
 
-export interface SearchValue {
-  label: string
-  value: number
-}
-
 export function DebounceSelect<
   ValueType extends {
     key?: string

@@ -35,7 +35,8 @@ export enum StudentCourseStatusColor {
 }
 
 export type StudentCourseSearchParams = PaginationParams & {
-  studentId?: number
+  content?: string
   courseId?: number
+  facilityId?: number
   status?: StudentCourseStatusEnum
 }

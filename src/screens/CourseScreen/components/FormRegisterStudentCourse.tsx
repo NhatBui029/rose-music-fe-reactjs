@@ -9,34 +9,43 @@ import {
 } from 'antd'
 import { useState } from 'react'
 import './style.css'
-import { DebounceSelect, SearchValue } from './SearchSelect'
+import { DebounceSelect } from './SearchSelect'
 import { useGetCourses } from '@api/api-hooks/course'
 import { useGetVouchers } from '@api/api-hooks/voucher'
 import createRegisterCourseSchema from '../ParticipateCourseScreen/register-course.schema'
 import useRegisterCourseStore from '@stores/register-course.store'
 import { RegisterCourseDataCreate } from 'src/types/student-course'
 import { E2VvoucherDiscountUnit } from 'src/utils/student-course.util'
+import { useGetStudentDetail } from '@api/api-hooks/student'
 
 type RegisterCourseFormProps = {
   form: FormInstance
 }
 
+export interface SearchValue {
+  label: string
+  value: number
+}
+
 const FormRegisterCourse = ({ form }: RegisterCourseFormProps) => {
   const validationRules = useYupValidation(createRegisterCourseSchema)
   const { setRegisterCourseData } = useRegisterCourseStore()
-  const [student, setStudent] = useState<SearchValue>()
+  const [students, setStudents] = useState<SearchValue>()
+  // const {data: student} = useGetStudentDetail()
   const { data: courses } = useGetCourses(
     {
-      facilityId: student?.value,
+      facilityId: 1,
     },
-    !!student,
+    !!students,
   )
+  console.log('🚀 ~ FormRegisterCourse ~ student?.value:', students)
+
   const { data: vouchers } = useGetVouchers(
     {
-      facilityId: student?.value,
+      facilityId: 1,
       isAvailable: true,
     },
-    !!student,
+    !!students,
   )
 
   const onFinish: FormProps['onFinish'] = async (values) => {
@@ -60,10 +69,10 @@ const FormRegisterCourse = ({ form }: RegisterCourseFormProps) => {
       <Form.Item label="Học viên" name="studentIds" rules={[validationRules]}>
         <DebounceSelect
           mode="multiple"
-          value={student}
+          value={students}
           placeholder="Tìm kiếm"
           onChange={(newTudent) => {
-            setStudent(newTudent)
+            setStudents(newTudent)
           }}
           style={{ width: '100%' }}
         />
